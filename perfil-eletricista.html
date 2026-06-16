@@ -67,7 +67,9 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 .book-card .avail{font-size:13px;color:#43a047;font-weight:600;margin-bottom:16px;}
 .book-card label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;}
 input,select,textarea{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'Poppins',sans-serif;background:white;margin-bottom:14px;}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondary);}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondary);} 
+input.invalid,select.invalid,textarea.invalid{border-color:#c62828;} 
+.error-text{color:#c62828;font-size:12px;margin-top:-8px;margin-bottom:10px;display:none;}
 .book-total{background:var(--surface-alt);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;border:1px solid var(--border);}
 .book-total .row-t{display:flex;justify-content:space-between;margin-bottom:4px;}
 .book-total .total{font-weight:700;font-size:16px;}
@@ -190,9 +192,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondar
         <option>Fiação elétrica</option>
         <option>Emergência elétrica</option>
       </select>
+      <div class="error-text" id="servicoError"></div>
 
       <label for="data">Data</label>
       <input type="date" id="data" required>
+      <div class="error-text" id="dataError"></div>
 
       <label for="horario">Horário</label>
       <select id="horario">
@@ -204,9 +208,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondar
         <option>15:00</option>
         <option>16:00</option>
       </select>
+      <div class="error-text" id="horarioError"></div>
 
       <label for="endereco">Endereço</label>
       <input type="text" id="endereco" placeholder="Rua das Flores, 123 - São Paulo" required>
+      <div class="error-text" id="enderecoError"></div>
 
       <div class="book-total">
         <div class="row-t"><span>Visita técnica</span><span>Grátis</span></div>
@@ -220,15 +226,51 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondar
   </div>
 </main>
 <script>
-function submitRequest(){
-  const servico = document.getElementById('servico').value;
-  const data = document.getElementById('data').value;
-  const horario = document.getElementById('horario').value;
-  const endereco = document.getElementById('endereco').value.trim();
-  if (!servico || servico === 'Selecione o serviço' || !data || !horario || horario === 'Selecione o horário' || !endereco) {
-    alert('Preencha todos os campos para solicitar o serviço.');
-    return;
+function setError(input, errorEl, message) {
+  if (message) {
+    input.classList.add('invalid');
+    errorEl.textContent = message;
+    errorEl.style.display = 'block';
+  } else {
+    input.classList.remove('invalid');
+    errorEl.textContent = '';
+    errorEl.style.display = 'none';
   }
+}
+
+function submitRequest(){
+  const servico = document.getElementById('servico');
+  const data = document.getElementById('data');
+  const horario = document.getElementById('horario');
+  const endereco = document.getElementById('endereco');
+  let valid = true;
+
+  if (!servico.value || servico.value === 'Selecione o serviço') {
+    setError(servico, document.getElementById('servicoError'), 'Escolha o tipo de serviço.');
+    valid = false;
+  } else {
+    setError(servico, document.getElementById('servicoError'), '');
+  }
+  if (!data.value) {
+    setError(data, document.getElementById('dataError'), 'Selecione uma data.');
+    valid = false;
+  } else {
+    setError(data, document.getElementById('dataError'), '');
+  }
+  if (!horario.value || horario.value === 'Selecione o horário') {
+    setError(horario, document.getElementById('horarioError'), 'Escolha um horário.');
+    valid = false;
+  } else {
+    setError(horario, document.getElementById('horarioError'), '');
+  }
+  if (!endereco.value.trim()) {
+    setError(endereco, document.getElementById('enderecoError'), 'Informe o endereço.');
+    valid = false;
+  } else {
+    setError(endereco, document.getElementById('enderecoError'), '');
+  }
+
+  if (!valid) return;
   alert('Solicitação enviada com sucesso!');
   window.location.href = 'agenda.html';
 }

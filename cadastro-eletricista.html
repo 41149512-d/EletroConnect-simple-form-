@@ -21,7 +21,9 @@ header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);}
 .form-group{margin-bottom:18px;}
 label{font-weight:500;font-size:14px;margin-bottom:7px;display:block;}
 input,select,textarea{width:100%;padding:13px 16px;border:2px solid var(--gray-mid);border-radius:10px;font-size:15px;font-family:'Poppins',sans-serif;transition:.2s;background:white;}
-input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondary);}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondary);} 
+input.invalid,select.invalid,textarea.invalid{border-color:#c62828;} 
+.error-text{color:#c62828;font-size:12px;margin-top:6px;display:none;}
 textarea{resize:vertical;min-height:100px;}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .btn{width:100%;padding:14px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:16px;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
@@ -67,66 +69,73 @@ textarea{resize:vertical;min-height:100px;}
 
     <div class="badge-info">⚡ Cadastro gratuito — comece a receber clientes hoje mesmo!</div>
 
-    <div class="row">
-      <div class="form-group">
-        <label>Nome completo</label>
-        <input type="text" placeholder="Carlos Silva">
+    <form id="electricianForm">
+      <div class="row">
+        <div class="form-group">
+          <label>Nome completo</label>
+          <input type="text" id="nomeCompleto" placeholder="Carlos Silva" required>
+          <div class="error-text" id="nomeCompletoError"></div>
+        </div>
+        <div class="form-group">
+          <label>CPF</label>
+          <input type="text" id="cpf" placeholder="000.000.000-00" required>
+          <div class="error-text" id="cpfError"></div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>CPF</label>
-        <input type="text" placeholder="000.000.000-00">
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="form-group">
-        <label>E-mail</label>
-        <input type="email" placeholder="seu@email.com">
+      <div class="row">
+        <div class="form-group">
+          <label>E-mail</label>
+          <input type="email" id="email" placeholder="seu@email.com" required>
+          <div class="error-text" id="emailError"></div>
+        </div>
+        <div class="form-group">
+          <label>Telefone / WhatsApp</label>
+          <input type="tel" id="telefone" placeholder="(11) 99999-9999" required>
+          <div class="error-text" id="telefoneError"></div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Telefone / WhatsApp</label>
-        <input type="tel" placeholder="(11) 99999-9999">
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="form-group">
-        <label>CEP de atuação</label>
-        <input type="text" placeholder="00000-000">
+      <div class="row">
+        <div class="form-group">
+          <label>CEP de atuação</label>
+          <input type="text" id="cep" placeholder="00000-000" required>
+          <div class="error-text" id="cepError"></div>
+        </div>
+        <div class="form-group">
+          <label>Raio de atendimento</label>
+          <select id="raio">
+            <option>5 km</option>
+            <option>10 km</option>
+            <option selected>20 km</option>
+            <option>30 km</option>
+            <option>50 km</option>
+          </select>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Raio de atendimento</label>
-        <select>
-          <option>5 km</option>
-          <option>10 km</option>
-          <option selected>20 km</option>
-          <option>30 km</option>
-          <option>50 km</option>
-        </select>
-      </div>
-    </div>
 
-    <div class="row">
-      <div class="form-group">
-        <label>Anos de experiência</label>
-        <select>
-          <option>Menos de 1 ano</option>
-          <option>1-3 anos</option>
-          <option selected>3-5 anos</option>
-          <option>5-10 anos</option>
-          <option>Mais de 10 anos</option>
-        </select>
+      <div class="row">
+        <div class="form-group">
+          <label>Anos de experiência</label>
+          <select id="experiencia">
+            <option>Menos de 1 ano</option>
+            <option>1-3 anos</option>
+            <option selected>3-5 anos</option>
+            <option>5-10 anos</option>
+            <option>Mais de 10 anos</option>
+          </select>
+        </div>
+        <div class="form-group">
+          <label>Valor hora (R$)</label>
+          <input type="number" id="valorHora" min="1" placeholder="Ex: 80" required>
+          <div class="error-text" id="valorHoraError"></div>
+        </div>
       </div>
-      <div class="form-group">
-        <label>Valor hora (R$)</label>
-        <input type="number" placeholder="Ex: 80">
-      </div>
-    </div>
 
-    <div class="form-group">
-      <label>Número CREA (opcional)</label>
-      <input type="text" placeholder="Registro profissional (se houver)">
-    </div>
+      <div class="form-group">
+        <label>Número CREA (opcional)</label>
+        <input type="text" id="crea" placeholder="Registro profissional (se houver)">
+      </div>
 
     <div class="form-group">
       <label>Serviços que você oferece</label>
@@ -145,7 +154,8 @@ textarea{resize:vertical;min-height:100px;}
 
     <div class="form-group">
       <label>Mini bio / Apresentação</label>
-      <textarea placeholder="Fale sobre sua experiência, especialidades e diferenciais..."></textarea>
+      <textarea id="bio" placeholder="Fale sobre sua experiência, especialidades e diferenciais..." required></textarea>
+      <div class="error-text" id="bioError"></div>
     </div>
 
     <div class="form-group">
@@ -159,17 +169,18 @@ textarea{resize:vertical;min-height:100px;}
     <div class="row">
       <div class="form-group">
         <label>Senha</label>
-        <input type="password" placeholder="Mín. 8 caracteres">
+        <input type="password" id="senha" placeholder="Mín. 8 caracteres" required>
+        <div class="error-text" id="senhaError"></div>
       </div>
       <div class="form-group">
         <label>Confirmar senha</label>
-        <input type="password" placeholder="Repita a senha">
+        <input type="password" id="confirmSenha" placeholder="Repita a senha" required>
+        <div class="error-text" id="confirmSenhaError"></div>
       </div>
     </div>
 
-    <a href="dashboard-eletricista.html">
-      <button class="btn btn-primary">⚡ Criar conta de eletricista</button>
-    </a>
+    <button type="submit" class="btn btn-primary">⚡ Criar conta de eletricista</button>
+    </form>
     <p class="terms">Ao criar uma conta, você concorda com os <a href="termos.html">Termos de Uso</a> e a <a href="privacidade.html">Política de Privacidade</a>.</p>
     <div class="login-link">Já tem conta? <a href="login.html">Entrar</a></div>
   </div>
@@ -177,6 +188,45 @@ textarea{resize:vertical;min-height:100px;}
 
 <script>
 function toggleService(el){el.classList.toggle('selected');}
+function setFieldError(input, errorEl, message) {
+  if (message) {
+    input.classList.add('invalid');
+    errorEl.textContent = message;
+    errorEl.style.display = 'block';
+  } else {
+    input.classList.remove('invalid');
+    errorEl.textContent = '';
+    errorEl.style.display = 'none';
+  }
+}
+
+document.getElementById('electricianForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const nomeCompleto = document.getElementById('nomeCompleto');
+  const cpf = document.getElementById('cpf');
+  const email = document.getElementById('email');
+  const telefone = document.getElementById('telefone');
+  const cep = document.getElementById('cep');
+  const valorHora = document.getElementById('valorHora');
+  const bio = document.getElementById('bio');
+  const senha = document.getElementById('senha');
+  const confirmSenha = document.getElementById('confirmSenha');
+  let valid = true;
+
+  if (!nomeCompleto.value.trim()) { setFieldError(nomeCompleto, document.getElementById('nomeCompletoError'), 'Informe seu nome.'); valid = false; } else { setFieldError(nomeCompleto, document.getElementById('nomeCompletoError'), ''); }
+  if (!/^\d{3}\.\d{3}\.\d{3}-\d{2}$/.test(cpf.value.trim())) { setFieldError(cpf, document.getElementById('cpfError'), 'CPF inválido.'); valid = false; } else { setFieldError(cpf, document.getElementById('cpfError'), ''); }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { setFieldError(email, document.getElementById('emailError'), 'E-mail inválido.'); valid = false; } else { setFieldError(email, document.getElementById('emailError'), ''); }
+  if (!/^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$/.test(telefone.value.trim())) { setFieldError(telefone, document.getElementById('telefoneError'), 'Telefone inválido.'); valid = false; } else { setFieldError(telefone, document.getElementById('telefoneError'), ''); }
+  if (!/^\d{5}-?\d{3}$/.test(cep.value.trim())) { setFieldError(cep, document.getElementById('cepError'), 'CEP inválido.'); valid = false; } else { setFieldError(cep, document.getElementById('cepError'), ''); }
+  if (!valorHora.value || Number(valorHora.value) <= 0) { setFieldError(valorHora, document.getElementById('valorHoraError'), 'Informe um valor válido.'); valid = false; } else { setFieldError(valorHora, document.getElementById('valorHoraError'), ''); }
+  if (!bio.value.trim()) { setFieldError(bio, document.getElementById('bioError'), 'Descreva seu perfil.'); valid = false; } else { setFieldError(bio, document.getElementById('bioError'), ''); }
+  if (senha.value.length < 8) { setFieldError(senha, document.getElementById('senhaError'), 'A senha deve ter pelo menos 8 caracteres.'); valid = false; } else { setFieldError(senha, document.getElementById('senhaError'), ''); }
+  if (confirmSenha.value !== senha.value) { setFieldError(confirmSenha, document.getElementById('confirmSenhaError'), 'As senhas não coincidem.'); valid = false; } else { setFieldError(confirmSenha, document.getElementById('confirmSenhaError'), ''); }
+
+  if (!valid) return;
+  alert('Cadastro enviado com sucesso!');
+  window.location.href = 'dashboard-eletricista.html';
+});
 </script>
 </body>
 </html>

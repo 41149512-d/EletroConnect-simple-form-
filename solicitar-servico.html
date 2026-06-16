@@ -17,8 +17,10 @@
     .card{background:white;border-radius:16px;box-shadow:var(--shadow);padding:32px;}
     .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
     input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--gray-mid);border-radius:10px;margin-top:6px;font-size:14px;}
+    input.invalid,select.invalid,textarea.invalid{border-color:#c62828;}
     label{display:block;font-size:14px;font-weight:600;margin-bottom:6px;}
     textarea{min-height:120px;resize:vertical;}
+    .error-text{display:none;color:#c62828;font-size:12px;margin-top:6px;}
     .btn{width:100%;display:flex;justify-content:center;align-items:center;gap:8px;}
     @media (max-width: 760px){.grid{grid-template-columns:1fr;}}
   </style>
@@ -50,34 +52,78 @@
         <div>
           <label for="data">Data preferida</label>
           <input type="date" id="data" required>
+          <div class="error-text" id="dataError"></div>
         </div>
       </div>
       <div class="grid" style="margin-top:16px;">
         <div>
           <label for="endereco">Endereço</label>
           <input type="text" id="endereco" placeholder="Rua, número, bairro" required>
+          <div class="error-text" id="enderecoError"></div>
         </div>
         <div>
           <label for="telefone">Telefone</label>
           <input type="tel" id="telefone" placeholder="(11) 99999-9999" required>
+          <div class="error-text" id="telefoneError"></div>
         </div>
       </div>
       <div style="margin-top:16px;">
         <label for="descricao">Descrição do problema</label>
         <textarea id="descricao" placeholder="Descreva o que está acontecendo..." required></textarea>
+        <div class="error-text" id="descricaoError"></div>
       </div>
       <button type="submit" class="btn btn-primary" style="display:block;margin-top:18px;">Enviar solicitação</button>
     </form>
   </div>
 </main>
 <script>
+function setError(input, errorEl, message) {
+  if (message) {
+    input.classList.add('invalid');
+    errorEl.textContent = message;
+    errorEl.style.display = 'block';
+  } else {
+    input.classList.remove('invalid');
+    errorEl.textContent = '';
+    errorEl.style.display = 'none';
+  }
+}
+
 const form = document.getElementById('serviceForm');
 form.addEventListener('submit', function (e) {
   e.preventDefault();
-  if (!form.checkValidity()) {
-    form.reportValidity();
-    return;
+  const data = document.getElementById('data');
+  const endereco = document.getElementById('endereco');
+  const telefone = document.getElementById('telefone');
+  const descricao = document.getElementById('descricao');
+  let valid = true;
+
+  if (!data.value) {
+    setError(data, document.getElementById('dataError'), 'Selecione uma data.');
+    valid = false;
+  } else {
+    setError(data, document.getElementById('dataError'), '');
   }
+  if (!endereco.value.trim()) {
+    setError(endereco, document.getElementById('enderecoError'), 'Informe o endereço.');
+    valid = false;
+  } else {
+    setError(endereco, document.getElementById('enderecoError'), '');
+  }
+  if (!/^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$/.test(telefone.value.trim())) {
+    setError(telefone, document.getElementById('telefoneError'), 'Telefone inválido.');
+    valid = false;
+  } else {
+    setError(telefone, document.getElementById('telefoneError'), '');
+  }
+  if (!descricao.value.trim() || descricao.value.trim().length < 10) {
+    setError(descricao, document.getElementById('descricaoError'), 'Descreva o problema com pelo menos 10 caracteres.');
+    valid = false;
+  } else {
+    setError(descricao, document.getElementById('descricaoError'), '');
+  }
+
+  if (!valid) return;
   alert('Solicitação enviada com sucesso! Você será redirecionado para a agenda.');
   window.location.href = 'agenda.html';
 });

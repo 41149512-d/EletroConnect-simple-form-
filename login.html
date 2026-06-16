@@ -21,7 +21,9 @@ header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);}
 .form-group{margin-bottom:20px;}
 label{font-weight:500;font-size:14px;margin-bottom:7px;display:block;}
 input{width:100%;padding:13px 16px;border:2px solid var(--gray-mid);border-radius:10px;font-size:15px;font-family:'Poppins',sans-serif;transition:.2s;background:white;}
-input:focus{outline:none;border-color:var(--secondary);}
+input:focus{outline:none;border-color:var(--secondary);} 
+.error-message{display:none;color:#c62828;font-size:13px;margin-top:10px;text-align:center;} 
+input.invalid{border-color:#c62828;}
 .input-wrap{position:relative;}
 .input-wrap input{padding-right:44px;}
 .input-wrap .eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--text-muted);font-size:18px;border:none;background:none;}
@@ -63,6 +65,7 @@ input:focus{outline:none;border-color:var(--secondary);}
     <div class="form-group">
       <label>E-mail</label>
       <input type="email" id="email" placeholder="seu@email.com">
+      <div class="error-message" id="emailError"></div>
     </div>
 
     <div class="form-group">
@@ -71,6 +74,7 @@ input:focus{outline:none;border-color:var(--secondary);}
         <input type="password" id="pwd" placeholder="••••••••">
         <button type="button" class="eye" onclick="togglePwd()">👁</button>
       </div>
+      <div class="error-message" id="pwdError"></div>
     </div>
 
     <div class="forgot"><a href="mailto:suporte@eletroconnect.com?subject=Recupera%C3%A7%C3%A3o%20de%20senha">Esqueci minha senha</a></div>
@@ -101,13 +105,39 @@ function setTab(el,tipo){
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
 }
-function doLogin(){
-  const email=document.getElementById('email').value.trim();
-  const pwd=document.getElementById('pwd').value;
-  if(!email || !pwd){
-    alert('Preencha e-mail e senha para continuar.');
-    return;
+function setError(input, errorEl, message){
+  if(message){
+    input.classList.add('invalid');
+    errorEl.textContent = message;
+    errorEl.style.display = 'block';
+  } else {
+    input.classList.remove('invalid');
+    errorEl.textContent = '';
+    errorEl.style.display = 'none';
   }
+}
+function doLogin(){
+  const email=document.getElementById('email');
+  const pwd=document.getElementById('pwd');
+  const emailError=document.getElementById('emailError');
+  const pwdError=document.getElementById('pwdError');
+  const emailValue=email.value.trim();
+  const pwdValue=pwd.value;
+
+  let valid=true;
+  if(!emailValue || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(emailValue)){
+    setError(email, emailError, 'Informe um e-mail válido.');
+    valid=false;
+  } else {
+    setError(email, emailError, '');
+  }
+  if(!pwdValue || pwdValue.length < 6){
+    setError(pwd, pwdError, 'A senha deve ter pelo menos 6 caracteres.');
+    valid=false;
+  } else {
+    setError(pwd, pwdError, '');
+  }
+  if(!valid) return;
   const target = selectedRole === 'eletricista' ? 'dashboard-eletricista.html' : 'dashboard-cliente.html';
   window.location.href = target;
 }

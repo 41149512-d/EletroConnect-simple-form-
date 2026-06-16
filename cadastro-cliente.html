@@ -21,7 +21,9 @@ header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);}
 .form-group{margin-bottom:18px;}
 label{font-weight:500;font-size:14px;margin-bottom:7px;display:block;}
 input,select{width:100%;padding:13px 16px;border:2px solid var(--gray-mid);border-radius:10px;font-size:15px;font-family:'Poppins',sans-serif;transition:.2s;background:white;}
-input:focus,select:focus{outline:none;border-color:var(--secondary);}
+input:focus,select:focus{outline:none;border-color:var(--secondary);} 
+input.invalid,select.invalid{border-color:#c62828;} 
+.error-text{color:#c62828;font-size:12px;margin-top:6px;display:none;}
 .row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
 .btn{width:100%;padding:14px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:16px;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
 .btn-primary{background:var(--secondary);color:#000;}
@@ -60,46 +62,53 @@ input:focus,select:focus{outline:none;border-color:var(--secondary);}
     </div>
     <div class="step-label">Etapa 2 de 3 — Dados pessoais</div>
 
-    <div class="row">
-      <div class="form-group">
-        <label>Nome</label>
-        <input type="text" placeholder="João">
+    <form id="customerForm">
+      <div class="row">
+        <div class="form-group">
+          <label>Nome</label>
+          <input type="text" id="nome" placeholder="João" required>
+          <div class="error-text" id="nomeError"></div>
+        </div>
+        <div class="form-group">
+          <label>Sobrenome</label>
+          <input type="text" id="sobrenome" placeholder="Silva" required>
+          <div class="error-text" id="sobrenomeError"></div>
+        </div>
       </div>
+
       <div class="form-group">
-        <label>Sobrenome</label>
-        <input type="text" placeholder="Silva">
+        <label>E-mail</label>
+        <input type="email" id="email" placeholder="seu@email.com" required>
+        <div class="error-text" id="emailError"></div>
       </div>
-    </div>
 
-    <div class="form-group">
-      <label>E-mail</label>
-      <input type="email" placeholder="seu@email.com">
-    </div>
-
-    <div class="form-group">
-      <label>Telefone / WhatsApp</label>
-      <input type="tel" placeholder="(11) 99999-9999">
-    </div>
-
-    <div class="form-group">
-      <label>CEP</label>
-      <input type="text" placeholder="00000-000" maxlength="9">
-    </div>
-
-    <div class="row">
       <div class="form-group">
-        <label>Senha</label>
-        <input type="password" placeholder="Mín. 8 caracteres">
+        <label>Telefone / WhatsApp</label>
+        <input type="tel" id="telefone" placeholder="(11) 99999-9999" required>
+        <div class="error-text" id="telefoneError"></div>
       </div>
-      <div class="form-group">
-        <label>Confirmar senha</label>
-        <input type="password" placeholder="Repita a senha">
-      </div>
-    </div>
 
-    <a href="dashboard-cliente.html">
-      <button class="btn btn-primary">⚡ Criar minha conta</button>
-    </a>
+      <div class="form-group">
+        <label>CEP</label>
+        <input type="text" id="cep" placeholder="00000-000" maxlength="9" required>
+        <div class="error-text" id="cepError"></div>
+      </div>
+
+      <div class="row">
+        <div class="form-group">
+          <label>Senha</label>
+          <input type="password" id="senha" placeholder="Mín. 8 caracteres" required>
+          <div class="error-text" id="senhaError"></div>
+        </div>
+        <div class="form-group">
+          <label>Confirmar senha</label>
+          <input type="password" id="confirmSenha" placeholder="Repita a senha" required>
+          <div class="error-text" id="confirmSenhaError"></div>
+        </div>
+      </div>
+
+      <button type="submit" class="btn btn-primary">⚡ Criar minha conta</button>
+    </form>
 
     <p class="terms">Ao criar uma conta, você concorda com os <a href="termos.html">Termos de Uso</a> e a <a href="privacidade.html">Política de Privacidade</a>.</p>
 
@@ -113,5 +122,43 @@ input:focus,select:focus{outline:none;border-color:var(--secondary);}
     </div>
   </div>
 </main>
+<script>
+function setFieldError(input, errorEl, message) {
+  if (message) {
+    input.classList.add('invalid');
+    errorEl.textContent = message;
+    errorEl.style.display = 'block';
+  } else {
+    input.classList.remove('invalid');
+    errorEl.textContent = '';
+    errorEl.style.display = 'none';
+  }
+}
+
+document.getElementById('customerForm').addEventListener('submit', function (e) {
+  e.preventDefault();
+  const nome = document.getElementById('nome');
+  const sobrenome = document.getElementById('sobrenome');
+  const email = document.getElementById('email');
+  const telefone = document.getElementById('telefone');
+  const cep = document.getElementById('cep');
+  const senha = document.getElementById('senha');
+  const confirmSenha = document.getElementById('confirmSenha');
+
+  let valid = true;
+
+  if (!nome.value.trim()) { setFieldError(nome, document.getElementById('nomeError'), 'Informe o nome.'); valid = false; } else { setFieldError(nome, document.getElementById('nomeError'), ''); }
+  if (!sobrenome.value.trim()) { setFieldError(sobrenome, document.getElementById('sobrenomeError'), 'Informe o sobrenome.'); valid = false; } else { setFieldError(sobrenome, document.getElementById('sobrenomeError'), ''); }
+  if (!/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email.value.trim())) { setFieldError(email, document.getElementById('emailError'), 'Informe um e-mail válido.'); valid = false; } else { setFieldError(email, document.getElementById('emailError'), ''); }
+  if (!/^\(?\d{2}\)?\s?9?\d{4}-?\d{4}$/.test(telefone.value.trim())) { setFieldError(telefone, document.getElementById('telefoneError'), 'Informe um telefone válido.'); valid = false; } else { setFieldError(telefone, document.getElementById('telefoneError'), ''); }
+  if (!/^\d{5}-?\d{3}$/.test(cep.value.trim())) { setFieldError(cep, document.getElementById('cepError'), 'Informe um CEP válido.'); valid = false; } else { setFieldError(cep, document.getElementById('cepError'), ''); }
+  if (senha.value.length < 8) { setFieldError(senha, document.getElementById('senhaError'), 'A senha deve ter pelo menos 8 caracteres.'); valid = false; } else { setFieldError(senha, document.getElementById('senhaError'), ''); }
+  if (confirmSenha.value !== senha.value) { setFieldError(confirmSenha, document.getElementById('confirmSenhaError'), 'As senhas não coincidem.'); valid = false; } else { setFieldError(confirmSenha, document.getElementById('confirmSenhaError'), ''); }
+
+  if (!valid) return;
+  alert('Conta criada com sucesso!');
+  window.location.href = 'dashboard-cliente.html';
+});
+</script>
 </body>
 </html>
