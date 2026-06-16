@@ -1,0 +1,108 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Login - EletroConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#FFFFFF;--secondary:#FFC107;--secondary-dark:#e6ac00;--dark:#121212;--gray:#f5f5f5;--gray-mid:#e0e0e0;--text-muted:#666;--radius:12px;--shadow:0 4px 16px rgba(0,0,0,.09);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:var(--gray);color:var(--dark);min-height:100vh;display:flex;flex-direction:column;}
+a{text-decoration:none;color:inherit;}
+header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);}
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:18px 5%;}
+.logo{font-size:24px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.logo span{color:var(--secondary);}
+.main{flex:1;display:flex;align-items:center;justify-content:center;padding:60px 20px;}
+.login-box{background:white;border-radius:20px;box-shadow:var(--shadow);padding:48px 40px;width:100%;max-width:440px;}
+.login-box h2{font-size:26px;font-weight:700;margin-bottom:6px;}
+.login-box p{color:var(--text-muted);margin-bottom:32px;font-size:14px;}
+.form-group{margin-bottom:20px;}
+label{font-weight:500;font-size:14px;margin-bottom:7px;display:block;}
+input{width:100%;padding:13px 16px;border:2px solid var(--gray-mid);border-radius:10px;font-size:15px;font-family:'Poppins',sans-serif;transition:.2s;background:white;}
+input:focus{outline:none;border-color:var(--secondary);}
+.input-wrap{position:relative;}
+.input-wrap input{padding-right:44px;}
+.input-wrap .eye{position:absolute;right:14px;top:50%;transform:translateY(-50%);cursor:pointer;color:var(--text-muted);font-size:18px;border:none;background:none;}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:16px;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-primary{background:var(--secondary);color:#000;}
+.btn-primary:hover{background:var(--secondary-dark);}
+.forgot{text-align:right;font-size:13px;color:var(--text-muted);margin-top:-12px;margin-bottom:24px;}
+.forgot a{color:var(--secondary);font-weight:600;}
+.divider{display:flex;align-items:center;gap:12px;margin:24px 0;color:var(--text-muted);font-size:13px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--gray-mid);}
+.social-btns{display:flex;gap:12px;margin-bottom:24px;}
+.btn-social{flex:1;padding:12px;border:2px solid var(--gray-mid);border-radius:10px;background:white;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;}
+.btn-social:hover{border-color:#aaa;}
+.register-link{text-align:center;font-size:14px;color:var(--text-muted);}
+.register-link a{color:var(--secondary);font-weight:600;}
+.tabs{display:flex;gap:0;margin-bottom:28px;border:2px solid var(--gray-mid);border-radius:10px;overflow:hidden;}
+.tab{flex:1;padding:12px;text-align:center;font-weight:600;font-size:14px;cursor:pointer;transition:.2s;border:none;background:white;color:var(--text-muted);}
+.tab.active{background:var(--secondary);color:#000;}
+</style>
+</head>
+<body>
+<header>
+  <div class="navbar">
+    <a href="index.html" class="logo">⚡ Eletro<span>Connect</span></a>
+    <a href="cadastro-cliente.html" style="font-size:14px;color:var(--text-muted);">Não tem conta? <strong style="color:var(--secondary);">Cadastre-se</strong></a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="login-box">
+    <h2>Bem-vindo de volta!</h2>
+    <p>Entre na sua conta para continuar.</p>
+
+    <div class="tabs">
+      <button class="tab active" onclick="setTab(this,'cliente')">Sou Cliente</button>
+      <button class="tab" onclick="setTab(this,'eletricista')">Sou Eletricista</button>
+    </div>
+
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" placeholder="seu@email.com">
+    </div>
+
+    <div class="form-group">
+      <label>Senha</label>
+      <div class="input-wrap">
+        <input type="password" id="pwd" placeholder="••••••••">
+        <button class="eye" onclick="togglePwd()">👁</button>
+      </div>
+    </div>
+
+    <div class="forgot"><a href="#">Esqueci minha senha</a></div>
+
+    <a href="dashboard-cliente.html" id="loginBtn">
+      <button class="btn btn-primary">⚡ Entrar</button>
+    </a>
+
+    <div class="divider">ou continue com</div>
+
+    <div class="social-btns">
+      <button class="btn-social">🔵 Google</button>
+      <button class="btn-social">🔷 Facebook</button>
+    </div>
+
+    <div class="register-link">
+      Não tem conta? <a href="cadastro-cliente.html">Cadastre-se grátis</a>
+    </div>
+  </div>
+</main>
+
+<script>
+function togglePwd(){
+  const p=document.getElementById('pwd');
+  p.type=p.type==='password'?'text':'password';
+}
+function setTab(el,tipo){
+  document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
+  el.classList.add('active');
+  const btn=document.getElementById('loginBtn');
+  btn.href=tipo==='cliente'?'dashboard-cliente.html':'dashboard-eletricista.html';
+}
+</script>
+</body>
+</html>

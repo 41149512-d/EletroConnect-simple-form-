@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Cadastro de Cliente - EletroConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#FFFFFF;--secondary:#FFC107;--secondary-dark:#e6ac00;--dark:#121212;--gray:#f5f5f5;--gray-mid:#e0e0e0;--text-muted:#666;--radius:12px;--shadow:0 4px 16px rgba(0,0,0,.09);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:var(--gray);color:var(--dark);min-height:100vh;display:flex;flex-direction:column;}
+a{text-decoration:none;color:inherit;}
+header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);}
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:18px 5%;}
+.logo{font-size:24px;font-weight:700;display:flex;align-items:center;gap:6px;}
+.logo span{color:var(--secondary);}
+.main{flex:1;display:flex;align-items:flex-start;justify-content:center;padding:50px 20px;}
+.box{background:white;border-radius:20px;box-shadow:var(--shadow);padding:44px 40px;width:100%;max-width:520px;}
+.box h2{font-size:26px;font-weight:700;margin-bottom:6px;}
+.box .sub{color:var(--text-muted);margin-bottom:28px;font-size:14px;}
+.form-group{margin-bottom:18px;}
+label{font-weight:500;font-size:14px;margin-bottom:7px;display:block;}
+input,select{width:100%;padding:13px 16px;border:2px solid var(--gray-mid);border-radius:10px;font-size:15px;font-family:'Poppins',sans-serif;transition:.2s;background:white;}
+input:focus,select:focus{outline:none;border-color:var(--secondary);}
+.row{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+.btn{width:100%;padding:14px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:16px;transition:.2s;display:flex;align-items:center;justify-content:center;gap:8px;}
+.btn-primary{background:var(--secondary);color:#000;}
+.btn-primary:hover{background:var(--secondary-dark);}
+.terms{font-size:13px;color:var(--text-muted);text-align:center;margin:16px 0;}
+.terms a{color:var(--secondary);}
+.login-link{text-align:center;font-size:14px;color:var(--text-muted);margin-top:16px;}
+.login-link a{color:var(--secondary);font-weight:600;}
+.progress{display:flex;gap:8px;margin-bottom:28px;}
+.step-dot{flex:1;height:6px;border-radius:4px;background:var(--gray-mid);}
+.step-dot.active{background:var(--secondary);}
+.step-label{font-size:13px;color:var(--text-muted);margin-bottom:20px;}
+.divider{display:flex;align-items:center;gap:12px;margin:20px 0;color:var(--text-muted);font-size:13px;}
+.divider::before,.divider::after{content:'';flex:1;height:1px;background:var(--gray-mid);}
+.btn-social{width:100%;padding:12px;border:2px solid var(--gray-mid);border-radius:10px;background:white;font-size:14px;font-weight:500;cursor:pointer;display:flex;align-items:center;justify-content:center;gap:8px;transition:.2s;margin-bottom:10px;}
+.btn-social:hover{border-color:#aaa;}
+</style>
+</head>
+<body>
+<header>
+  <div class="navbar">
+    <a href="index.html" class="logo">⚡ Eletro<span>Connect</span></a>
+    <a href="login.html" style="font-size:14px;color:var(--text-muted);">Já tem conta? <strong style="color:var(--secondary);">Entrar</strong></a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="box">
+    <h2>Crie sua conta</h2>
+    <p class="sub">Encontre eletricistas qualificados perto de você.</p>
+
+    <div class="progress">
+      <div class="step-dot active"></div>
+      <div class="step-dot active"></div>
+      <div class="step-dot"></div>
+    </div>
+    <div class="step-label">Etapa 2 de 3 — Dados pessoais</div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>Nome</label>
+        <input type="text" placeholder="João">
+      </div>
+      <div class="form-group">
+        <label>Sobrenome</label>
+        <input type="text" placeholder="Silva">
+      </div>
+    </div>
+
+    <div class="form-group">
+      <label>E-mail</label>
+      <input type="email" placeholder="seu@email.com">
+    </div>
+
+    <div class="form-group">
+      <label>Telefone / WhatsApp</label>
+      <input type="tel" placeholder="(11) 99999-9999">
+    </div>
+
+    <div class="form-group">
+      <label>CEP</label>
+      <input type="text" placeholder="00000-000" maxlength="9">
+    </div>
+
+    <div class="row">
+      <div class="form-group">
+        <label>Senha</label>
+        <input type="password" placeholder="Mín. 8 caracteres">
+      </div>
+      <div class="form-group">
+        <label>Confirmar senha</label>
+        <input type="password" placeholder="Repita a senha">
+      </div>
+    </div>
+
+    <a href="dashboard-cliente.html">
+      <button class="btn btn-primary">⚡ Criar minha conta</button>
+    </a>
+
+    <p class="terms">Ao criar uma conta, você concorda com os <a href="#">Termos de Uso</a> e a <a href="#">Política de Privacidade</a>.</p>
+
+    <div class="divider">ou cadastre-se com</div>
+
+    <button class="btn-social">🔵 Continuar com Google</button>
+
+    <div class="login-link">Já tem conta? <a href="login.html">Entrar</a></div>
+    <div style="text-align:center;margin-top:12px;font-size:14px;">
+      É eletricista? <a href="cadastro-eletricista.html" style="color:var(--secondary);font-weight:600;">Cadastre-se aqui</a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

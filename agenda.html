@@ -1,0 +1,224 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Agenda - EletroConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#FFFFFF;--secondary:#FFC107;--secondary-dark:#e6ac00;--dark:#121212;--gray:#f5f5f5;--gray-mid:#e0e0e0;--text-muted:#666;--radius:12px;--shadow:0 4px 16px rgba(0,0,0,.09);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#f9f9f9;color:var(--dark);}
+a{text-decoration:none;color:inherit;}
+header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 5%;}
+.logo{font-size:22px;font-weight:700;}
+.logo span{color:var(--secondary);}
+.btn{padding:11px 20px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px;transition:.2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary{background:var(--secondary);color:#000;}
+.btn-primary:hover{background:var(--secondary-dark);}
+.btn-sm{padding:8px 14px;font-size:12px;}
+.btn-ghost{background:var(--gray);color:var(--dark);}
+.main{max-width:1200px;margin:0 auto;padding:28px 5%;}
+.page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
+.page-header h1{font-size:24px;font-weight:700;}
+.tabs{display:flex;gap:8px;background:white;border-radius:12px;padding:6px;box-shadow:var(--shadow);width:fit-content;margin-bottom:24px;}
+.tab{padding:9px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text-muted);}
+.tab.active{background:var(--secondary);color:#000;font-weight:700;}
+.layout{display:grid;grid-template-columns:1fr 340px;gap:20px;}
+/* Calendar */
+.calendar-card{background:white;border-radius:14px;box-shadow:var(--shadow);padding:24px;}
+.cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
+.cal-nav h2{font-size:18px;font-weight:700;}
+.cal-nav-btns{display:flex;gap:8px;}
+.nav-btn{background:var(--gray);border:none;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:16px;}
+.weekdays{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:8px;}
+.days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
+.day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:14px;cursor:pointer;transition:.2s;position:relative;}
+.day:hover{background:var(--gray);}
+.day.other-month{color:#ccc;}
+.day.has-event::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--secondary);}
+.day.today{background:var(--dark);color:white;font-weight:700;}
+.day.today.has-event::after{background:var(--secondary);}
+.day.selected{background:var(--secondary);color:#000;font-weight:700;}
+/* Appointments */
+.appts-card{background:white;border-radius:14px;box-shadow:var(--shadow);padding:24px;}
+.appts-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.appts-header h3{font-size:16px;font-weight:700;}
+.appt-list{display:flex;flex-direction:column;gap:12px;}
+.appt{border-radius:12px;padding:16px;display:flex;gap:12px;align-items:flex-start;border-left:4px solid var(--secondary);background:var(--gray);}
+.appt.confirmed{border-left-color:#43a047;}
+.appt.pending{border-left-color:#ffc107;}
+.appt.cancelled{border-left-color:#e53935;opacity:.7;}
+.appt-time-col{min-width:52px;text-align:center;}
+.appt-time-col .time{font-size:15px;font-weight:700;}
+.appt-time-col .dur{font-size:11px;color:var(--text-muted);}
+.appt-body{flex:1;}
+.appt-body h4{font-size:14px;font-weight:600;margin-bottom:3px;}
+.appt-body .client{font-size:13px;color:var(--text-muted);}
+.appt-body .address{font-size:12px;color:var(--text-muted);margin-top:2px;}
+.appt-actions{display:flex;gap:6px;margin-top:8px;}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-success{background:#e8f5e9;color:#2e7d32;}
+.badge-warning{background:#fff8e1;color:#f57f17;}
+.badge-cancelled{background:#ffebee;color:#c62828;}
+/* Sidebar card */
+.side-card{background:white;border-radius:14px;box-shadow:var(--shadow);padding:22px;margin-bottom:16px;}
+.side-card h3{font-size:15px;font-weight:700;margin-bottom:14px;}
+.summary-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gray);}
+.summary-item:last-child{border-bottom:none;}
+.summary-item .lbl{font-size:14px;color:var(--text-muted);}
+.summary-item .val{font-size:14px;font-weight:700;}
+@media(max-width:800px){.layout{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="navbar">
+    <a href="index.html" class="logo">⚡ Eletro<span>Connect</span></a>
+    <div style="display:flex;gap:12px;align-items:center;">
+      <a href="dashboard-cliente.html" style="font-size:14px;color:var(--text-muted);">Painel</a>
+      <a href="solicitar-servico.html"><button class="btn btn-primary btn-sm">+ Novo serviço</button></a>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="page-header">
+    <h1>📅 Agenda</h1>
+    <a href="solicitar-servico.html"><button class="btn btn-primary">+ Solicitar serviço</button></a>
+  </div>
+
+  <div class="tabs">
+    <button class="tab active" onclick="setTab(this)">Dia</button>
+    <button class="tab" onclick="setTab(this)">Semana</button>
+    <button class="tab" onclick="setTab(this)">Mês</button>
+    <button class="tab" onclick="setTab(this)">Lista</button>
+  </div>
+
+  <div class="layout">
+    <div>
+      <!-- Calendar -->
+      <div class="calendar-card" style="margin-bottom:20px;">
+        <div class="cal-nav">
+          <h2>Junho 2026</h2>
+          <div class="cal-nav-btns">
+            <button class="nav-btn">‹</button>
+            <button class="btn btn-ghost btn-sm">Hoje</button>
+            <button class="nav-btn">›</button>
+          </div>
+        </div>
+        <div class="weekdays">
+          <div>Dom</div><div>Seg</div><div>Ter</div><div>Qua</div><div>Qui</div><div>Sex</div><div>Sáb</div>
+        </div>
+        <div class="days-grid" id="calGrid"></div>
+      </div>
+
+      <!-- Appointments -->
+      <div class="appts-card">
+        <div class="appts-header">
+          <h3>Segunda-feira, 16 de junho</h3>
+          <span style="font-size:13px;color:var(--text-muted);">3 serviços</span>
+        </div>
+        <div class="appt-list">
+          <div class="appt confirmed">
+            <div class="appt-time-col"><div class="time">08:00</div><div class="dur">2h</div></div>
+            <div class="appt-body">
+              <h4>Instalação de tomadas</h4>
+              <div class="client">👤 João Silva</div>
+              <div class="address">📍 Rua das Flores, 123 - São Paulo, SP</div>
+              <div class="appt-actions">
+                <span class="badge badge-success">Confirmado</span>
+                <a href="chat.html"><button class="btn btn-primary btn-sm">💬 Chat</button></a>
+              </div>
+            </div>
+          </div>
+          <div class="appt confirmed">
+            <div class="appt-time-col"><div class="time">14:00</div><div class="dur">1h30</div></div>
+            <div class="appt-body">
+              <h4>Troca de disjuntor</h4>
+              <div class="client">👤 Maria Oliveira</div>
+              <div class="address">📍 Av. Paulista, 1000 - São Paulo, SP</div>
+              <div class="appt-actions">
+                <span class="badge badge-success">Confirmado</span>
+                <a href="chat.html"><button class="btn btn-primary btn-sm">💬 Chat</button></a>
+              </div>
+            </div>
+          </div>
+          <div class="appt pending">
+            <div class="appt-time-col"><div class="time">17:00</div><div class="dur">2h</div></div>
+            <div class="appt-body">
+              <h4>Instalação de luminárias</h4>
+              <div class="client">👤 Pedro Santos</div>
+              <div class="address">📍 Rua Augusta, 500 - São Paulo, SP</div>
+              <div class="appt-actions">
+                <span class="badge badge-warning">Pendente</span>
+                <button class="btn btn-primary btn-sm">✓ Confirmar</button>
+                <button class="btn btn-sm" style="background:#ffebee;color:#c62828;">✗ Recusar</button>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Sidebar -->
+    <div>
+      <div class="side-card">
+        <h3>Resumo da semana</h3>
+        <div class="summary-item"><span class="lbl">Serviços agendados</span><span class="val">8</span></div>
+        <div class="summary-item"><span class="lbl">Confirmados</span><span class="val" style="color:#43a047;">6</span></div>
+        <div class="summary-item"><span class="lbl">Pendentes</span><span class="val" style="color:#f57f17;">2</span></div>
+        <div class="summary-item"><span class="lbl">Estimativa de ganhos</span><span class="val">R$ 1.240</span></div>
+      </div>
+
+      <div class="side-card">
+        <h3>Próximos serviços</h3>
+        <div class="appt-list">
+          <div class="appt confirmed" style="padding:12px;">
+            <div class="appt-time-col"><div class="time">08:00</div></div>
+            <div class="appt-body">
+              <h4 style="font-size:13px;">Instalação de tomadas</h4>
+              <div class="client" style="font-size:12px;">João Silva • Hoje</div>
+            </div>
+          </div>
+          <div class="appt confirmed" style="padding:12px;">
+            <div class="appt-time-col"><div class="time">10:00</div></div>
+            <div class="appt-body">
+              <h4 style="font-size:13px;">Troca de disjuntor</h4>
+              <div class="client" style="font-size:12px;">Carlos Mendes • Amanhã</div>
+            </div>
+          </div>
+        </div>
+        <a href="solicitar-servico.html"><button class="btn btn-primary" style="width:100%;justify-content:center;margin-top:14px;">+ Solicitar serviço</button></a>
+      </div>
+    </div>
+  </div>
+</main>
+
+<script>
+function setTab(el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
+
+// Generate calendar
+const grid=document.getElementById('calGrid');
+const today=16;
+const hasDays=[3,9,12,16,18,22,24,28];
+// June 2026 starts on Monday (day 1)
+const startDay=1; // Mon=1, so offset 1 from Sunday
+// First cell offset
+for(let i=0;i<startDay;i++){
+  const d=document.createElement('div');
+  d.className='day other-month';
+  d.textContent=31-startDay+i+1;
+  grid.appendChild(d);
+}
+for(let d=1;d<=30;d++){
+  const el=document.createElement('div');
+  el.className='day'+(d===today?' today selected':'')+(hasDays.includes(d)?' has-event':'');
+  el.textContent=d;
+  el.onclick=()=>{document.querySelectorAll('.day.selected').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');}
+  grid.appendChild(el);
+}
+</script>
+</body>
+</html>

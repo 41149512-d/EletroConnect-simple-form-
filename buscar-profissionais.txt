@@ -1,0 +1,225 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Buscar Profissionais - EletroConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#FFFFFF;--secondary:#FFC107;--secondary-dark:#e6ac00;--dark:#121212;--gray:#f5f5f5;--gray-mid:#e0e0e0;--text-muted:#666;--radius:12px;--shadow:0 4px 16px rgba(0,0,0,.09);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#f9f9f9;color:var(--dark);}
+a{text-decoration:none;color:inherit;}
+header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 5%;}
+.logo{font-size:22px;font-weight:700;}
+.logo span{color:var(--secondary);}
+.nav-links{display:flex;gap:20px;align-items:center;}
+.nav-links a{font-size:14px;font-weight:500;color:var(--text-muted);}
+.nav-links a:hover{color:var(--secondary);}
+.btn{padding:10px 20px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px;transition:.2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary{background:var(--secondary);color:#000;}
+.btn-primary:hover{background:var(--secondary-dark);}
+.btn-sm{padding:8px 14px;font-size:13px;}
+.layout{display:grid;grid-template-columns:280px 1fr;gap:24px;max-width:1200px;margin:0 auto;padding:28px 5%;}
+/* Filtros */
+.filters{background:white;border-radius:14px;box-shadow:var(--shadow);padding:24px;height:fit-content;position:sticky;top:90px;}
+.filters h3{font-size:16px;font-weight:700;margin-bottom:16px;}
+.filter-group{margin-bottom:20px;}
+.filter-group label{font-size:13px;font-weight:600;margin-bottom:8px;display:block;color:var(--text-muted);text-transform:uppercase;letter-spacing:.5px;}
+input[type="text"],input[type="range"],select{width:100%;padding:10px 14px;border:2px solid var(--gray-mid);border-radius:10px;font-size:14px;font-family:'Poppins',sans-serif;background:white;}
+input:focus,select:focus{outline:none;border-color:var(--secondary);}
+input[type="range"]{padding:0;border:none;accent-color:var(--secondary);}
+.range-label{font-size:13px;color:var(--text-muted);margin-top:4px;}
+.check-list{display:flex;flex-direction:column;gap:8px;}
+.check-item{display:flex;align-items:center;gap:8px;font-size:14px;cursor:pointer;}
+.check-item input[type="checkbox"]{width:16px;height:16px;accent-color:var(--secondary);}
+.btn-filter{width:100%;padding:11px;border:none;border-radius:10px;background:var(--secondary);font-weight:600;font-size:14px;cursor:pointer;margin-top:4px;}
+.btn-clear{width:100%;padding:11px;border:2px solid var(--gray-mid);border-radius:10px;background:white;font-weight:600;font-size:14px;cursor:pointer;margin-top:8px;}
+/* Results */
+.results-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
+.results-header h2{font-size:18px;font-weight:700;}
+.sort-wrap{display:flex;align-items:center;gap:8px;font-size:14px;color:var(--text-muted);}
+.sort-wrap select{padding:8px 12px;font-size:13px;width:auto;}
+.search-bar{display:flex;gap:10px;margin-bottom:20px;}
+.search-bar input{flex:1;}
+.pro-grid{display:flex;flex-direction:column;gap:14px;}
+.pro-card{background:white;border-radius:14px;padding:22px;box-shadow:var(--shadow);display:flex;gap:18px;align-items:flex-start;transition:.2s;}
+.pro-card:hover{box-shadow:0 8px 24px rgba(0,0,0,.12);}
+.pro-avatar{width:70px;height:70px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-size:32px;flex-shrink:0;}
+.pro-body{flex:1;}
+.pro-body .name-row{display:flex;align-items:center;gap:10px;margin-bottom:4px;}
+.pro-body h3{font-size:17px;font-weight:700;}
+.verified{background:#e8f5e9;color:#2e7d32;font-size:11px;font-weight:600;padding:3px 8px;border-radius:6px;}
+.stars{color:#ffc107;font-size:14px;}
+.stars span{color:var(--dark);font-size:13px;}
+.meta{font-size:13px;color:var(--text-muted);margin:6px 0;}
+.tags{display:flex;gap:8px;flex-wrap:wrap;margin:10px 0;}
+.tag{background:var(--gray);padding:4px 10px;border-radius:6px;font-size:12px;font-weight:500;}
+.pro-right{display:flex;flex-direction:column;align-items:flex-end;gap:10px;flex-shrink:0;}
+.price{font-size:16px;font-weight:700;}
+.price span{font-size:12px;font-weight:400;color:var(--text-muted);}
+@media(max-width:768px){.layout{grid-template-columns:1fr;}.filters{display:none;}.pro-card{flex-direction:column;}.pro-right{flex-direction:row;align-items:center;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="navbar">
+    <a href="index.html" class="logo">⚡ Eletro<span>Connect</span></a>
+    <div class="nav-links">
+      <a href="dashboard-cliente.html">Início</a>
+      <a href="buscar-profissionais.html">Buscar</a>
+      <a href="agenda.html">Agenda</a>
+    </div>
+    <div style="display:flex;align-items:center;gap:12px;">
+      <span style="font-size:22px;">🔔</span>
+      <div style="width:34px;height:34px;border-radius:50%;background:var(--secondary);display:flex;align-items:center;justify-content:center;font-weight:700;">J</div>
+    </div>
+  </div>
+</header>
+
+<div class="layout">
+  <!-- Filtros -->
+  <aside class="filters">
+    <h3>Filtros</h3>
+
+    <div class="filter-group">
+      <label>Localização</label>
+      <input type="text" placeholder="CEP ou bairro">
+    </div>
+
+    <div class="filter-group">
+      <label>Raio de distância</label>
+      <input type="range" min="1" max="50" value="20" id="dist" oninput="document.getElementById('distVal').textContent=this.value">
+      <div class="range-label">Até <strong id="distVal">20</strong> km</div>
+    </div>
+
+    <div class="filter-group">
+      <label>Tipo de serviço</label>
+      <div class="check-list">
+        <label class="check-item"><input type="checkbox" checked> Instalações</label>
+        <label class="check-item"><input type="checkbox"> Iluminação</label>
+        <label class="check-item"><input type="checkbox"> Emergências</label>
+        <label class="check-item"><input type="checkbox"> Residencial</label>
+        <label class="check-item"><input type="checkbox"> Comercial</label>
+        <label class="check-item"><input type="checkbox"> Disjuntores</label>
+        <label class="check-item"><input type="checkbox"> Fiação</label>
+      </div>
+    </div>
+
+    <div class="filter-group">
+      <label>Avaliação mínima</label>
+      <select>
+        <option>Qualquer avaliação</option>
+        <option>4+ estrelas</option>
+        <option selected>4.5+ estrelas</option>
+        <option>5 estrelas</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Disponibilidade</label>
+      <select>
+        <option>Qualquer data</option>
+        <option selected>Hoje</option>
+        <option>Esta semana</option>
+        <option>Próxima semana</option>
+      </select>
+    </div>
+
+    <div class="filter-group">
+      <label>Preço máximo/hora</label>
+      <input type="range" min="50" max="500" value="200" id="price" oninput="document.getElementById('priceVal').textContent=this.value">
+      <div class="range-label">Até R$ <strong id="priceVal">200</strong>/h</div>
+    </div>
+
+    <button class="btn-filter">🔍 Aplicar filtros</button>
+    <button class="btn-clear">Limpar filtros</button>
+  </aside>
+
+  <!-- Resultados -->
+  <div>
+    <div class="search-bar">
+      <input type="text" placeholder="Buscar por nome, serviço ou especialidade...">
+      <button class="btn btn-primary">🔍 Buscar</button>
+    </div>
+
+    <div class="results-header">
+      <h2>47 profissionais encontrados</h2>
+      <div class="sort-wrap">
+        Ordenar por:
+        <select>
+          <option>Mais próximos</option>
+          <option>Melhor avaliação</option>
+          <option>Menor preço</option>
+        </select>
+      </div>
+    </div>
+
+    <div class="pro-grid">
+
+      <a href="perfil-eletricista.html">
+      <div class="pro-card">
+        <div class="pro-avatar">👷</div>
+        <div class="pro-body">
+          <div class="name-row"><h3>Carlos Silva</h3><span class="verified">✓ Verificado</span></div>
+          <div class="stars">★★★★★ <span>4.9 (245 avaliações)</span></div>
+          <div class="meta">📍 2,5 km • Disponível hoje • 8 anos de experiência</div>
+          <div class="tags"><span class="tag">Instalações</span><span class="tag">Residencial</span><span class="tag">Tomadas</span><span class="tag">Disjuntores</span></div>
+        </div>
+        <div class="pro-right">
+          <div class="price">R$ 100<span>/hora</span></div>
+          <button class="btn btn-primary btn-sm">Ver perfil</button>
+        </div>
+      </div></a>
+
+      <a href="perfil-eletricista.html">
+      <div class="pro-card">
+        <div class="pro-avatar">👷</div>
+        <div class="pro-body">
+          <div class="name-row"><h3>Marcos Oliveira</h3><span class="verified">✓ Verificado</span></div>
+          <div class="stars">★★★★★ <span>4.8 (189 avaliações)</span></div>
+          <div class="meta">📍 3,1 km • Disponível hoje • 5 anos de experiência</div>
+          <div class="tags"><span class="tag">Comercial</span><span class="tag">Fiação</span><span class="tag">Iluminação</span></div>
+        </div>
+        <div class="pro-right">
+          <div class="price">R$ 120<span>/hora</span></div>
+          <button class="btn btn-primary btn-sm">Ver perfil</button>
+        </div>
+      </div></a>
+
+      <a href="perfil-eletricista.html">
+      <div class="pro-card">
+        <div class="pro-avatar">👷</div>
+        <div class="pro-body">
+          <div class="name-row"><h3>Lucas Pereira</h3></div>
+          <div class="stars">★★★★☆ <span>4.7 (156 avaliações)</span></div>
+          <div class="meta">📍 4,3 km • Disponível amanhã • 3 anos de experiência</div>
+          <div class="tags"><span class="tag">Residencial</span><span class="tag">Emergências</span><span class="tag">Iluminação</span></div>
+        </div>
+        <div class="pro-right">
+          <div class="price">R$ 90<span>/hora</span></div>
+          <button class="btn btn-primary btn-sm">Ver perfil</button>
+        </div>
+      </div></a>
+
+      <a href="perfil-eletricista.html">
+      <div class="pro-card">
+        <div class="pro-avatar">👷</div>
+        <div class="pro-body">
+          <div class="name-row"><h3>Rafael Costa</h3><span class="verified">✓ Verificado</span></div>
+          <div class="stars">★★★★★ <span>4.9 (312 avaliações)</span></div>
+          <div class="meta">📍 5,8 km • Disponível hoje • 12 anos de experiência</div>
+          <div class="tags"><span class="tag">Solar</span><span class="tag">Comercial</span><span class="tag">Instalações</span></div>
+        </div>
+        <div class="pro-right">
+          <div class="price">R$ 150<span>/hora</span></div>
+          <button class="btn btn-primary btn-sm">Ver perfil</button>
+        </div>
+      </div></a>
+
+    </div>
+  </div>
+</div>
+</body>
+</html>

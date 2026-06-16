@@ -1,0 +1,212 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Carlos Silva - EletroConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#FFFFFF;--secondary:#FFC107;--secondary-dark:#e6ac00;--dark:#121212;--gray:#f5f5f5;--gray-mid:#e0e0e0;--text-muted:#666;--radius:12px;--shadow:0 4px 16px rgba(0,0,0,.09);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#f9f9f9;color:var(--dark);}
+a{text-decoration:none;color:inherit;}
+header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 5%;}
+.logo{font-size:22px;font-weight:700;}
+.logo span{color:var(--secondary);}
+.back-link{font-size:14px;color:var(--secondary);font-weight:600;display:flex;align-items:center;gap:4px;}
+.btn{padding:12px 22px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:15px;transition:.2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary{background:var(--secondary);color:#000;}
+.btn-primary:hover{background:var(--secondary-dark);}
+.btn-outline{background:white;color:var(--dark);border:2px solid var(--gray-mid);}
+.btn-outline:hover{border-color:#aaa;}
+.btn-sm{padding:9px 16px;font-size:13px;}
+.main{max-width:1100px;margin:0 auto;padding:32px 5%;}
+.layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:flex-start;}
+/* Hero profile */
+.profile-hero{background:white;border-radius:16px;box-shadow:var(--shadow);padding:28px;margin-bottom:20px;}
+.profile-top{display:flex;gap:20px;align-items:center;margin-bottom:20px;}
+.avatar-lg{width:90px;height:90px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-size:42px;flex-shrink:0;border:3px solid var(--secondary);}
+.profile-info h1{font-size:24px;font-weight:700;margin-bottom:4px;}
+.verified{background:#e8f5e9;color:#2e7d32;font-size:12px;font-weight:600;padding:3px 10px;border-radius:6px;margin-left:8px;}
+.stars{color:#ffc107;}
+.meta-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:10px;font-size:14px;color:var(--text-muted);}
+.meta-item{display:flex;align-items:center;gap:5px;}
+.stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px;}
+.stat{text-align:center;background:var(--gray);border-radius:10px;padding:14px 10px;}
+.stat .val{font-size:22px;font-weight:700;}
+.stat .lbl{font-size:11px;color:var(--text-muted);margin-top:2px;}
+.card{background:white;border-radius:14px;box-shadow:var(--shadow);padding:22px;margin-bottom:16px;}
+.card h3{font-size:16px;font-weight:700;margin-bottom:14px;}
+.tags{display:flex;gap:8px;flex-wrap:wrap;}
+.tag{background:var(--gray);padding:6px 12px;border-radius:8px;font-size:13px;font-weight:500;}
+.review-list{display:flex;flex-direction:column;gap:16px;}
+.review{padding-bottom:16px;border-bottom:1px solid var(--gray);}
+.review:last-child{border-bottom:none;padding-bottom:0;}
+.review-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
+.reviewer{display:flex;align-items:center;gap:10px;}
+.reviewer-avatar{width:36px;height:36px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.reviewer-name{font-weight:600;font-size:14px;}
+.review-date{font-size:12px;color:#aaa;}
+.review p{font-size:14px;color:var(--text-muted);margin-top:4px;}
+/* Sticky card */
+.book-card{background:white;border-radius:16px;box-shadow:var(--shadow);padding:24px;position:sticky;top:90px;}
+.book-card .price{font-size:28px;font-weight:700;margin-bottom:4px;}
+.book-card .price span{font-size:15px;font-weight:400;color:var(--text-muted);}
+.book-card .avail{font-size:13px;color:#43a047;font-weight:600;margin-bottom:16px;}
+.book-card label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;}
+input,select,textarea{width:100%;padding:11px 14px;border:2px solid var(--gray-mid);border-radius:10px;font-size:14px;font-family:'Poppins',sans-serif;background:white;margin-bottom:14px;}
+input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondary);}
+.book-total{background:var(--gray);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;}
+.book-total .row-t{display:flex;justify-content:space-between;margin-bottom:4px;}
+.book-total .total{font-weight:700;font-size:16px;}
+@media(max-width:800px){.layout{grid-template-columns:1fr;}.stats-row{grid-template-columns:1fr 1fr;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="navbar">
+    <a href="index.html" class="logo">⚡ Eletro<span>Connect</span></a>
+    <a href="buscar-profissionais.html" class="back-link">← Voltar para busca</a>
+  </div>
+</header>
+
+<main class="main">
+  <div class="layout">
+    <div>
+      <!-- Perfil hero -->
+      <div class="profile-hero">
+        <div class="profile-top">
+          <div class="avatar-lg">👷</div>
+          <div class="profile-info">
+            <h1>Carlos Silva <span class="verified">✓ Verificado</span></h1>
+            <div class="stars">★★★★★ <strong>4.9</strong> <span style="color:var(--text-muted);font-size:14px;">(245 avaliações)</span></div>
+            <div class="meta-row">
+              <span class="meta-item">📍 São Paulo, SP</span>
+              <span class="meta-item">🕐 Responde em ~15 min</span>
+              <span class="meta-item">💼 8 anos de experiência</span>
+            </div>
+          </div>
+        </div>
+
+        <div class="stats-row">
+          <div class="stat"><div class="val">245</div><div class="lbl">Avaliações</div></div>
+          <div class="stat"><div class="val">312</div><div class="lbl">Serviços</div></div>
+          <div class="stat"><div class="val">98%</div><div class="lbl">Conclusão</div></div>
+          <div class="stat"><div class="val">8 anos</div><div class="lbl">Experiência</div></div>
+        </div>
+      </div>
+
+      <!-- Sobre -->
+      <div class="card">
+        <h3>Sobre</h3>
+        <p style="font-size:14px;color:var(--text-muted);line-height:1.7;">Eletricista profissional com 8 anos de experiência em instalações residenciais e comerciais. Atendo com pontualidade, organização e materiais de qualidade. Emito nota fiscal e ofereço garantia nos serviços realizados.</p>
+      </div>
+
+      <!-- Serviços -->
+      <div class="card">
+        <h3>Serviços oferecidos</h3>
+        <div class="tags">
+          <span class="tag">⚡ Instalações</span>
+          <span class="tag">💡 Iluminação</span>
+          <span class="tag">🔌 Tomadas</span>
+          <span class="tag">⚙️ Disjuntores</span>
+          <span class="tag">🏠 Residencial</span>
+          <span class="tag">🏢 Comercial</span>
+          <span class="tag">🔧 Fiação</span>
+          <span class="tag">🚨 Emergências</span>
+        </div>
+      </div>
+
+      <!-- Avaliações -->
+      <div class="card">
+        <h3>Avaliações de clientes</h3>
+        <div class="review-list">
+          <div class="review">
+            <div class="review-top">
+              <div class="reviewer">
+                <div class="reviewer-avatar">👤</div>
+                <div>
+                  <div class="reviewer-name">João Silva</div>
+                  <div style="color:#ffc107;font-size:13px;">★★★★★</div>
+                </div>
+              </div>
+              <div class="review-date">18/05/2024</div>
+            </div>
+            <p>Excelente profissional, chegou no horário e resolveu o problema rapidamente. Recomendo!</p>
+          </div>
+          <div class="review">
+            <div class="review-top">
+              <div class="reviewer">
+                <div class="reviewer-avatar">👤</div>
+                <div>
+                  <div class="reviewer-name">Maria Oliveira</div>
+                  <div style="color:#ffc107;font-size:13px;">★★★★★</div>
+                </div>
+              </div>
+              <div class="review-date">16/05/2024</div>
+            </div>
+            <p>Muito atencioso e explicou todo o serviço antes de realizar. Ótimo trabalho!</p>
+          </div>
+          <div class="review">
+            <div class="review-top">
+              <div class="reviewer">
+                <div class="reviewer-avatar">👤</div>
+                <div>
+                  <div class="reviewer-name">Carlos Mendes</div>
+                  <div style="color:#ffc107;font-size:13px;">★★★★★</div>
+                </div>
+              </div>
+              <div class="review-date">14/05/2024</div>
+            </div>
+            <p>Serviço de qualidade e preço justo. Já salvei o contato para outras vezes.</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Booking card -->
+    <div class="book-card">
+      <div class="price">R$ 100<span>/hora</span></div>
+      <div class="avail">● Disponível hoje</div>
+
+      <label>Tipo de serviço</label>
+      <select>
+        <option>Selecione o serviço</option>
+        <option>Instalação de tomadas</option>
+        <option>Troca de disjuntor</option>
+        <option>Instalação de luminárias</option>
+        <option>Fiação elétrica</option>
+        <option>Emergência elétrica</option>
+      </select>
+
+      <label>Data</label>
+      <input type="date">
+
+      <label>Horário</label>
+      <select>
+        <option>Selecione o horário</option>
+        <option>08:00</option>
+        <option>09:00</option>
+        <option>10:00</option>
+        <option>14:00</option>
+        <option>15:00</option>
+        <option>16:00</option>
+      </select>
+
+      <label>Endereço</label>
+      <input type="text" placeholder="Rua das Flores, 123 - São Paulo">
+
+      <div class="book-total">
+        <div class="row-t"><span>Visita técnica</span><span>Grátis</span></div>
+        <div class="row-t"><span>Estimativa (2h)</span><span>R$ 200</span></div>
+        <div class="row-t total"><span>Total estimado</span><span>R$ 200</span></div>
+      </div>
+
+      <a href="solicitar-servico.html"><button class="btn btn-primary" style="width:100%;justify-content:center;">⚡ Solicitar serviço</button></a>
+      <a href="chat.html"><button class="btn btn-outline" style="width:100%;justify-content:center;margin-top:10px;">💬 Enviar mensagem</button></a>
+    </div>
+  </div>
+</main>
+</body>
+</html>

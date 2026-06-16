@@ -1,0 +1,205 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel do Eletricista - EletroConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#FFFFFF;--secondary:#FFC107;--secondary-dark:#e6ac00;--dark:#121212;--gray:#f5f5f5;--gray-mid:#e0e0e0;--text-muted:#666;--radius:12px;--shadow:0 4px 16px rgba(0,0,0,.09);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#f9f9f9;color:var(--dark);display:flex;min-height:100vh;}
+a{text-decoration:none;color:inherit;}
+/* Sidebar */
+.sidebar{width:240px;background:var(--dark);color:white;display:flex;flex-direction:column;padding:0;flex-shrink:0;min-height:100vh;}
+.sidebar-logo{padding:24px 20px;font-size:20px;font-weight:700;border-bottom:1px solid rgba(255,255,255,.1);}
+.sidebar-logo span{color:var(--secondary);}
+.sidebar-nav{flex:1;padding:16px 0;}
+.nav-item{display:flex;align-items:center;gap:12px;padding:13px 20px;font-size:14px;font-weight:500;cursor:pointer;transition:.2s;border-left:3px solid transparent;}
+.nav-item:hover{background:rgba(255,255,255,.07);}
+.nav-item.active{background:rgba(255,193,7,.12);border-left-color:var(--secondary);color:var(--secondary);}
+.nav-item .icon{font-size:18px;width:22px;text-align:center;}
+.nav-badge{background:#e53935;color:white;border-radius:10px;padding:2px 7px;font-size:11px;font-weight:700;margin-left:auto;}
+.sidebar-footer{padding:16px 20px;border-top:1px solid rgba(255,255,255,.1);font-size:14px;color:#aaa;cursor:pointer;}
+/* Main */
+.content{flex:1;overflow:auto;}
+.topbar{background:white;padding:16px 32px;display:flex;justify-content:space-between;align-items:center;box-shadow:0 2px 8px rgba(0,0,0,.06);}
+.topbar h2{font-size:20px;font-weight:700;}
+.topbar-right{display:flex;align-items:center;gap:14px;}
+.notif{font-size:22px;cursor:pointer;position:relative;}
+.notif-dot{position:absolute;top:0;right:0;width:9px;height:9px;background:#e53935;border-radius:50%;border:2px solid white;}
+.profile-chip{display:flex;align-items:center;gap:10px;background:var(--gray);padding:6px 14px;border-radius:30px;}
+.profile-chip .name{font-size:14px;font-weight:600;}
+.profile-chip .role{font-size:11px;color:var(--text-muted);}
+.avatar-sm{width:32px;height:32px;border-radius:50%;background:var(--secondary);display:flex;align-items:center;justify-content:center;font-weight:700;}
+.main{padding:28px 32px;}
+/* Stats */
+.stats{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:28px;}
+.stat-card{background:white;border-radius:14px;padding:20px 22px;box-shadow:var(--shadow);}
+.stat-card .label{font-size:13px;color:var(--text-muted);margin-bottom:8px;}
+.stat-card .value{font-size:26px;font-weight:700;}
+.stat-card .link{font-size:12px;color:var(--secondary);margin-top:6px;display:block;}
+.stat-card .icon{font-size:28px;float:right;margin-top:-8px;}
+/* Grid 2 cols */
+.two-col{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+.card{background:white;border-radius:14px;padding:22px;box-shadow:var(--shadow);}
+.card h3{font-size:16px;font-weight:700;margin-bottom:16px;display:flex;justify-content:space-between;}
+.card h3 a{font-size:13px;font-weight:600;color:var(--secondary);}
+.appt-list{display:flex;flex-direction:column;gap:12px;}
+.appt{display:flex;align-items:center;gap:12px;padding:12px;background:var(--gray);border-radius:10px;}
+.appt-time{font-weight:700;font-size:14px;min-width:48px;}
+.appt-info{flex:1;}
+.appt-info .client{font-size:14px;font-weight:600;}
+.appt-info .service{font-size:12px;color:var(--text-muted);}
+.appt-info .address{font-size:11px;color:var(--text-muted);}
+.badge{display:inline-block;padding:3px 10px;border-radius:20px;font-size:11px;font-weight:600;}
+.badge-success{background:#e8f5e9;color:#2e7d32;}
+.badge-warning{background:#fff8e1;color:#f57f17;}
+.badge-pending{background:#e3f2fd;color:#1565c0;}
+.review-list{display:flex;flex-direction:column;gap:12px;}
+.review{display:flex;gap:12px;align-items:flex-start;}
+.review-avatar{width:36px;height:36px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:16px;flex-shrink:0;}
+.review-body .name{font-size:14px;font-weight:600;}
+.review-body .stars{color:#ffc107;font-size:13px;}
+.review-body p{font-size:13px;color:var(--text-muted);margin-top:2px;}
+.review-date{font-size:11px;color:#bbb;margin-left:auto;white-space:nowrap;}
+.btn{padding:10px 18px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px;transition:.2s;display:inline-flex;align-items:center;gap:6px;}
+.btn-primary{background:var(--secondary);color:#000;}
+.btn-primary:hover{background:var(--secondary-dark);}
+.btn-sm{padding:7px 14px;font-size:12px;}
+@media(max-width:900px){.sidebar{display:none;}.stats{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}}
+</style>
+</head>
+<body>
+<aside class="sidebar">
+  <div class="sidebar-logo">⚡ Eletro<span>Connect</span></div>
+  <nav class="sidebar-nav">
+    <div class="nav-item active"><span class="icon">🏠</span> Painel</div>
+    <a href="agenda.html"><div class="nav-item"><span class="icon">📅</span> Agenda</div></a>
+    <div class="nav-item"><span class="icon">🔧</span> Serviços</div>
+    <a href="chat.html"><div class="nav-item"><span class="icon">💬</span> Conversas <span class="nav-badge">3</span></div></a>
+    <div class="nav-item"><span class="icon">⭐</span> Avaliações</div>
+    <div class="nav-item"><span class="icon">💰</span> Financeiro</div>
+    <div class="nav-item"><span class="icon">👤</span> Perfil</div>
+    <div class="nav-item"><span class="icon">⚙️</span> Configurações</div>
+  </nav>
+  <div class="sidebar-footer">🚪 Sair</div>
+</aside>
+
+<div class="content">
+  <div class="topbar">
+    <div>
+      <h2>Painel</h2>
+    </div>
+    <div class="topbar-right">
+      <div class="notif">🔔<div class="notif-dot"></div></div>
+      <div class="profile-chip">
+        <div class="avatar-sm">C</div>
+        <div>
+          <div class="name">Carlos Silva</div>
+          <div class="role">Eletricista</div>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="main">
+    <p style="color:var(--text-muted);margin-bottom:20px;">Olá, Carlos! 👋 Veja seu resumo de hoje.</p>
+
+    <div class="stats">
+      <div class="stat-card">
+        <div class="label">Serviços hoje</div>
+        <div class="value">3 <span class="icon">📅</span></div>
+        <a class="link" href="agenda.html">Ver agenda →</a>
+      </div>
+      <div class="stat-card">
+        <div class="label">Serviços este mês</div>
+        <div class="value">28 <span class="icon">📋</span></div>
+        <a class="link" href="#">Ver todos →</a>
+      </div>
+      <div class="stat-card">
+        <div class="label">Ganhos este mês</div>
+        <div class="value" style="font-size:20px;">R$ 3.850 <span class="icon">💰</span></div>
+        <a class="link" href="#">Ver detalhes →</a>
+      </div>
+      <div class="stat-card">
+        <div class="label">Avaliação média</div>
+        <div class="value">4.9 <span style="color:#ffc107;font-size:20px;">★</span></div>
+        <a class="link" href="#">Ver avaliações →</a>
+      </div>
+    </div>
+
+    <div class="two-col">
+      <div class="card">
+        <h3>Próximos serviços <a href="agenda.html">Ver agenda completa</a></h3>
+        <div class="appt-list">
+          <div class="appt">
+            <div class="appt-time">14:00</div>
+            <div class="appt-info">
+              <div class="client">João Silva</div>
+              <div class="service">Instalação de tomadas</div>
+              <div class="address">📍 Rua das Flores, 123 - São Paulo, SP</div>
+            </div>
+            <span class="badge badge-success">Confirmado</span>
+            <span>›</span>
+          </div>
+          <div class="appt">
+            <div class="appt-time">16:30</div>
+            <div class="appt-info">
+              <div class="client">Maria Oliveira</div>
+              <div class="service">Troca de disjuntor</div>
+              <div class="address">📍 Av. Paulista, 1000 - São Paulo, SP</div>
+            </div>
+            <span class="badge badge-success">Confirmado</span>
+            <span>›</span>
+          </div>
+          <div class="appt">
+            <div class="appt-time">18:00</div>
+            <div class="appt-info">
+              <div class="client">Pedro Santos</div>
+              <div class="service">Instalação de luminárias</div>
+              <div class="address">📍 Rua Augusta, 500 - São Paulo, SP</div>
+            </div>
+            <span class="badge badge-warning">Pendente</span>
+            <span>›</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <h3>Avaliações recentes <a href="#">Ver todas</a></h3>
+        <div class="review-list">
+          <div class="review">
+            <div class="review-avatar">👤</div>
+            <div class="review-body">
+              <div class="name">João Silva</div>
+              <div class="stars">★★★★★</div>
+              <p>Excelente profissional, muito atencioso e organizado.</p>
+            </div>
+            <div class="review-date">18/05</div>
+          </div>
+          <div class="review">
+            <div class="review-avatar">👤</div>
+            <div class="review-body">
+              <div class="name">Maria Oliveira</div>
+              <div class="stars">★★★★★</div>
+              <p>Serviço de qualidade e realizado no prazo combinado.</p>
+            </div>
+            <div class="review-date">16/05</div>
+          </div>
+          <div class="review">
+            <div class="review-avatar">👤</div>
+            <div class="review-body">
+              <div class="name">Pedro Santos</div>
+              <div class="stars">★★★★★</div>
+              <p>Recomendo! Resolveu o problema rapidinho.</p>
+            </div>
+            <div class="review-date">14/05</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>
