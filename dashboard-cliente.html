@@ -1,0 +1,169 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Painel do Cliente - EletroConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{--primary:#FFFFFF;--secondary:#FFC107;--secondary-dark:#e6ac00;--dark:#121212;--gray:#f5f5f5;--gray-mid:#e0e0e0;--text-muted:#666;--radius:12px;--shadow:0 4px 16px rgba(0,0,0,.09);}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:#f9f9f9;color:var(--dark);}
+a{text-decoration:none;color:inherit;}
+header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
+.navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 5%;}
+.logo{font-size:22px;font-weight:700;}
+.logo span{color:var(--secondary);}
+.nav-right{display:flex;align-items:center;gap:16px;}
+.notif{position:relative;font-size:22px;cursor:pointer;}
+.notif-dot{position:absolute;top:0;right:0;width:9px;height:9px;background:#e53935;border-radius:50%;border:2px solid white;}
+.avatar{width:38px;height:38px;border-radius:50%;object-fit:cover;border:2px solid var(--secondary);}
+.avatar-placeholder{width:38px;height:38px;border-radius:50%;background:var(--secondary);display:flex;align-items:center;justify-content:center;font-weight:700;font-size:16px;}
+.main{max-width:1200px;margin:0 auto;padding:32px 5%;}
+.welcome{margin-bottom:28px;}
+.welcome h1{font-size:26px;font-weight:700;}
+.welcome p{color:var(--text-muted);font-size:15px;}
+.cta-banner{background:var(--dark);color:white;border-radius:16px;padding:28px 32px;display:flex;justify-content:space-between;align-items:center;margin-bottom:32px;background-image:linear-gradient(135deg,#121212 60%,#2a2a2a);}
+.cta-banner h3{font-size:20px;margin-bottom:6px;}
+.cta-banner p{font-size:14px;color:#aaa;}
+.btn{padding:12px 22px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:15px;transition:.2s;display:inline-flex;align-items:center;gap:8px;}
+.btn-primary{background:var(--secondary);color:#000;}
+.btn-primary:hover{background:var(--secondary-dark);}
+.btn-sm{padding:8px 16px;font-size:13px;}
+.section-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:18px;}
+.section-header h2{font-size:20px;font-weight:700;}
+.section-header a{font-size:14px;color:var(--secondary);font-weight:600;}
+.services-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(130px,1fr));gap:14px;margin-bottom:36px;}
+.service-card{background:white;border-radius:14px;padding:20px 14px;text-align:center;box-shadow:var(--shadow);cursor:pointer;transition:.2s;border:2px solid transparent;}
+.service-card:hover{transform:translateY(-4px);border-color:var(--secondary);}
+.service-card .icon{font-size:34px;margin-bottom:10px;}
+.service-card p{font-size:13px;font-weight:500;}
+.orders-list{display:flex;flex-direction:column;gap:14px;margin-bottom:36px;}
+.order-card{background:white;border-radius:14px;padding:20px 24px;box-shadow:var(--shadow);display:flex;align-items:center;justify-content:space-between;gap:16px;}
+.order-info{flex:1;}
+.order-info h4{font-size:16px;font-weight:600;margin-bottom:4px;}
+.order-info p{font-size:13px;color:var(--text-muted);}
+.badge{display:inline-block;padding:4px 12px;border-radius:20px;font-size:12px;font-weight:600;}
+.badge-success{background:#e8f5e9;color:#2e7d32;}
+.badge-warning{background:#fff8e1;color:#f57f17;}
+.badge-pending{background:#e3f2fd;color:#1565c0;}
+.order-actions{display:flex;gap:8px;}
+.pros-grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:16px;margin-bottom:36px;}
+.pro-card{background:white;border-radius:14px;padding:20px;box-shadow:var(--shadow);display:flex;align-items:center;gap:14px;}
+.pro-avatar{width:56px;height:56px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:24px;flex-shrink:0;}
+.pro-info{flex:1;}
+.pro-info h4{font-size:15px;font-weight:600;margin-bottom:2px;}
+.pro-info .stars{color:#ffc107;font-size:13px;}
+.pro-info p{font-size:13px;color:var(--text-muted);}
+.pro-info .dist{font-size:12px;margin-top:2px;}
+@media(max-width:600px){.cta-banner{flex-direction:column;gap:16px;text-align:center;}.order-card{flex-direction:column;align-items:flex-start;}}
+</style>
+</head>
+<body>
+<header>
+  <div class="navbar">
+    <a href="index.html" class="logo">⚡ Eletro<span>Connect</span></a>
+    <div class="nav-right">
+      <div class="notif">🔔<div class="notif-dot"></div></div>
+      <div class="avatar-placeholder">J</div>
+    </div>
+  </div>
+</header>
+
+<main class="main">
+  <div class="welcome">
+    <h1>Olá, João! 👋</h1>
+    <p>O que você precisa hoje?</p>
+  </div>
+
+  <div class="cta-banner">
+    <div>
+      <h3>Solicitar um serviço</h3>
+      <p>Encontre eletricistas especializados perto de você</p>
+    </div>
+    <a href="solicitar-servico.html"><button class="btn btn-primary">⚡ Solicitar serviço</button></a>
+  </div>
+
+  <div class="section-header">
+    <h2>Serviços populares</h2>
+    <a href="buscar-profissionais.html">Ver todos</a>
+  </div>
+  <div class="services-grid">
+    <a href="solicitar-servico.html"><div class="service-card"><div class="icon">⚡</div><p>Instalações</p></div></a>
+    <a href="solicitar-servico.html"><div class="service-card"><div class="icon">💡</div><p>Iluminação</p></div></a>
+    <a href="solicitar-servico.html"><div class="service-card"><div class="icon">🚨</div><p>Emergências</p></div></a>
+    <a href="solicitar-servico.html"><div class="service-card"><div class="icon">⚙️</div><p>Disjuntores</p></div></a>
+    <a href="solicitar-servico.html"><div class="service-card"><div class="icon">🔌</div><p>Tomadas</p></div></a>
+    <a href="solicitar-servico.html"><div class="service-card"><div class="icon">🔧</div><p>Fiação</p></div></a>
+  </div>
+
+  <div class="section-header">
+    <h2>Meus serviços</h2>
+    <a href="agenda.html">Ver todos</a>
+  </div>
+  <div class="orders-list">
+    <div class="order-card">
+      <div class="order-info">
+        <h4>Instalação de tomadas</h4>
+        <p>Carlos Silva • Rua das Flores, 123 — Hoje, 14:00</p>
+      </div>
+      <span class="badge badge-success">Confirmado</span>
+      <div class="order-actions">
+        <a href="chat.html"><button class="btn btn-primary btn-sm">💬 Chat</button></a>
+      </div>
+    </div>
+    <div class="order-card">
+      <div class="order-info">
+        <h4>Troca de disjuntor</h4>
+        <p>Marcos Oliveira • Av. Paulista, 1000 — Amanhã, 10:00</p>
+      </div>
+      <span class="badge badge-warning">Pendente</span>
+      <div class="order-actions">
+        <a href="chat.html"><button class="btn btn-primary btn-sm">💬 Chat</button></a>
+      </div>
+    </div>
+    <div class="order-card">
+      <div class="order-info">
+        <h4>Instalação de luminárias</h4>
+        <p>Lucas Pereira • Rua Augusta, 500 — 10/06, 09:00</p>
+      </div>
+      <span class="badge badge-success">Concluído</span>
+      <div class="order-actions">
+        <button class="btn btn-primary btn-sm">⭐ Avaliar</button>
+      </div>
+    </div>
+  </div>
+
+  <div class="section-header">
+    <h2>Profissionais próximos</h2>
+    <a href="buscar-profissionais.html">Ver todos</a>
+  </div>
+  <div class="pros-grid">
+    <a href="perfil-eletricista.html"><div class="pro-card">
+      <div class="pro-avatar">👷</div>
+      <div class="pro-info">
+        <h4>Carlos Silva</h4>
+        <div class="stars">★★★★★ <span style="color:var(--dark)">4.9 (245)</span></div>
+        <p class="dist">📍 2,5 km • A partir de R$ 100</p>
+      </div>
+    </div></a>
+    <a href="perfil-eletricista.html"><div class="pro-card">
+      <div class="pro-avatar">👷</div>
+      <div class="pro-info">
+        <h4>Marcos Oliveira</h4>
+        <div class="stars">★★★★★ <span style="color:var(--dark)">4.8 (189)</span></div>
+        <p class="dist">📍 3,1 km • A partir de R$ 120</p>
+      </div>
+    </div></a>
+    <a href="perfil-eletricista.html"><div class="pro-card">
+      <div class="pro-avatar">👷</div>
+      <div class="pro-info">
+        <h4>Lucas Pereira</h4>
+        <div class="stars">★★★★☆ <span style="color:var(--dark)">4.7 (156)</span></div>
+        <p class="dist">📍 4,3 km • A partir de R$ 90</p>
+      </div>
+    </div></a>
+  </div>
+</main>
+</body>
+</html>

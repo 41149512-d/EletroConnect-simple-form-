@@ -1,0 +1,72 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Solicitar Serviço - EletroConnect</title>
+  <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+  <style>
+    :root{--primary:#FFFFFF;--secondary:#FFC107;--secondary-dark:#e6ac00;--dark:#121212;--gray:#f5f5f5;--gray-mid:#e0e0e0;--text-muted:#666;--radius:12px;--shadow:0 4px 16px rgba(0,0,0,.09);}
+    *{box-sizing:border-box;margin:0;padding:0;font-family:'Poppins',sans-serif;}
+    body{background:#f9f9f9;color:var(--dark);}a{text-decoration:none;color:inherit;}
+    header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);}
+    .navbar{max-width:980px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;}
+    .logo{font-size:22px;font-weight:700;} .logo span{color:var(--secondary);} .btn{padding:12px 18px;border:none;border-radius:10px;cursor:pointer;font-weight:600;}
+    .btn-primary{background:var(--secondary);color:#000;}
+    main{max-width:980px;margin:0 auto;padding:40px 24px;}
+    .card{background:white;border-radius:16px;box-shadow:var(--shadow);padding:32px;}
+    .grid{display:grid;grid-template-columns:1fr 1fr;gap:16px;}
+    input,select,textarea{width:100%;padding:12px 14px;border:1px solid var(--gray-mid);border-radius:10px;margin-top:6px;font-size:14px;}
+    label{display:block;font-size:14px;font-weight:600;margin-bottom:6px;}
+    textarea{min-height:120px;resize:vertical;}
+    .btn{width:100%;display:flex;justify-content:center;align-items:center;gap:8px;}
+    @media (max-width: 760px){.grid{grid-template-columns:1fr;}}
+  </style>
+</head>
+<body>
+<header>
+  <div class="navbar">
+    <a href="index.html" class="logo">? Eletro<span>Connect</span></a>
+    <a href="dashboard-cliente.html" style="font-size:14px;color:var(--text-muted);">Voltar ao painel</a>
+  </div>
+</header>
+<main>
+  <div class="card">
+    <h2 style="margin-bottom:8px;">Solicitar serviço</h2>
+    <p style="color:var(--text-muted);margin-bottom:24px;">Preencha os detalhes para receber orçamentos.</p>
+    <div class="grid">
+      <div>
+        <label>Categoria</label>
+        <select>
+          <option>Instalações</option>
+          <option>Iluminação</option>
+          <option>Emergências</option>
+          <option>Disjuntores</option>
+          <option>Tomadas</option>
+          <option>Fiação</option>
+        </select>
+      </div>
+      <div>
+        <label>Data preferida</label>
+        <input type="date">
+      </div>
+    </div>
+    <div class="grid" style="margin-top:16px;">
+      <div>
+        <label>Endereço</label>
+        <input type="text" placeholder="Rua, número, bairro">
+      </div>
+      <div>
+        <label>Telefone</label>
+        <input type="tel" placeholder="(11) 99999-9999">
+      </div>
+    </div>
+    <div style="margin-top:16px;">
+      <label>Descrição do problema</label>
+      <textarea placeholder="Descreva o que está acontecendo..."></textarea>
+    </div>
+    <a href="agenda.html" style="display:block;margin-top:18px;"><button class="btn btn-primary">Enviar solicitação</button></a>
+  </div>
+</main>
+</body>
+</html>
