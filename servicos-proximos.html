@@ -1,0 +1,208 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Serviços Próximos - EletroConnect</title>
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+:root{
+  --primary:#FFFFFF;
+  --secondary:#FFC107;
+  --secondary-dark:#e6ac00;
+  --dark:#121212;
+  --bg:#f5f7fb;
+  --surface:#ffffff;
+  --surface-alt:#f8f9fc;
+  --border:#e7eaf1;
+  --text-muted:#667085;
+  --radius:16px;
+  --shadow:0 10px 30px rgba(15,23,42,.06);
+}
+*,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
+body{background:var(--bg);color:var(--dark);}a{text-decoration:none;color:inherit;}
+header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.navbar{max-width:1100px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;}
+.logo{font-size:22px;font-weight:700;}.logo span{color:var(--secondary);} .back-link{font-size:14px;color:var(--secondary);font-weight:600;}
+main{max-width:1100px;margin:0 auto;padding:36px 24px 60px;}
+.page-title{font-size:28px;font-weight:700;margin-bottom:6px;} .subtitle{color:var(--text-muted);margin-bottom:24px;}
+.cards{display:grid;grid-template-columns:repeat(auto-fit,minmax(260px,1fr));gap:18px;}
+.service-card{background:var(--surface);border-radius:16px;padding:22px;box-shadow:var(--shadow);border:1px solid var(--border);}
+.service-card h3{font-size:18px;font-weight:700;margin-bottom:6px;}.meta{font-size:13px;color:var(--text-muted);margin-bottom:10px;}
+.badge{display:inline-block;padding:4px 10px;border-radius:999px;font-size:12px;font-weight:600;background:#fff8e1;color:#f57f17;margin-bottom:12px;}
+.info{font-size:14px;color:var(--text-muted);line-height:1.6;}
+.price{font-size:22px;font-weight:700;margin-top:14px;}
+</style>
+</head>
+<body>
+<header>
+  <div class="navbar">
+    <a href="index.html" class="logo">⚡ Eletro<span>Connect</span></a>
+    <a href="dashboard-eletricista.html" class="back-link">← Voltar ao painel</a>
+  </div>
+</header>
+<main>
+  <h1 class="page-title">Serviços mais próximos</h1>
+  <p class="subtitle">Os 5 pedidos com menor distância do eletricista.</p>
+  <section class="cards">
+    <article class="service-card">
+      <span class="badge">1,2 km</span>
+      <h3>Instalação de tomadas</h3>
+      <div class="meta">João Silva • 16/06 • 14:00</div>
+      <div class="info">Cliente solicita troca de tomadas com acabamento padrão em cozinha e sala. Requer 2 pontos adicionais e conduíte embutido.</div>
+      <div class="price">R$ 180</div>
+    </article>
+    <article class="service-card">
+      <span class="badge">2,1 km</span>
+      <h3>Troca de disjuntor</h3>
+      <div class="meta">Maria Oliveira • 17/06 • 10:30</div>
+      <div class="info">O circuito principal está apresentando falhas; necessidade de substituir disjuntor e revisar a carga elétrica da unidade.</div>
+      <div class="price">R$ 240</div>
+    </article>
+    <article class="service-card">
+      <span class="badge">2,8 km</span>
+      <h3>Instalação de luminárias</h3>
+      <div class="meta">Pedro Santos • 18/06 • 09:00</div>
+      <div class="info">Instalação de 5 luminárias LED e ajuste de interruptores no corredor e quarto principal.</div>
+      <div class="price">R$ 210</div>
+    </article>
+    <article class="service-card">
+      <span class="badge">3,4 km</span>
+      <h3>Revisão elétrica</h3>
+      <div class="meta">Ana Costa • 19/06 • 15:30</div>
+      <div class="info">Visita para inspeção, testes e troca de pontos com falhas no sistema de iluminação.</div>
+      <div class="price">R$ 150</div>
+    </article>
+    <article class="service-card">
+      <span class="badge">4,0 km</span>
+      <h3>Instalação de ar-condicionado</h3>
+      <div class="meta">Carlos Mendes • 20/06 • 13:00</div>
+      <div class="info">Pré-instalação para circuito dedicado e suporte para unidade split de 12.000 BTUs.</div>
+      <div class="price">R$ 320</div>
+    </article>
+  </section>
+</main>
+<script>
+const REQUESTS_KEY = 'eletroconnectRequests';
+
+function readSaved(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+  } catch {
+    return fallback;
+  }
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return 'Data a definir';
+  const parts = dateStr.split('-');
+  if (parts.length === 3) {
+    return `${parts[2]}/${parts[1]}/${parts[0]}`;
+  }
+  return dateStr;
+}
+
+function getDistanceLabel(num) {
+  return `${num.toFixed(1)} km`;
+}
+
+function renderServices() {
+  const dynamicRequests = readSaved(REQUESTS_KEY, []);
+  const staticCards = [
+    {
+      id: 'default-1',
+      service: 'Instalação de tomadas',
+      client: 'João Silva',
+      date: '2026-06-16',
+      time: '14:00',
+      address: 'Rua das Flores, 123 - São Paulo',
+      description: 'Cliente solicita troca de tomadas com acabamento padrão em cozinha e sala. Requer 2 pontos adicionais e conduíte embutido.',
+      value: 180,
+      distance: 1.2
+    },
+    {
+      id: 'default-2',
+      service: 'Troca de disjuntor',
+      client: 'Maria Oliveira',
+      date: '2026-06-17',
+      time: '10:30',
+      address: 'Av. Paulista, 1000 - São Paulo',
+      description: 'O circuito principal está apresentando falhas; necessidade de substituir disjuntor e revisar a carga elétrica da unidade.',
+      value: 240,
+      distance: 2.1
+    },
+    {
+      id: 'default-3',
+      service: 'Instalação de luminárias',
+      client: 'Pedro Santos',
+      date: '2026-06-18',
+      time: '09:00',
+      address: 'Rua Augusta, 500 - São Paulo',
+      description: 'Instalação de 5 luminárias LED e ajuste de interruptores no corredor e quarto principal.',
+      value: 210,
+      distance: 2.8
+    },
+    {
+      id: 'default-4',
+      service: 'Revisão elétrica',
+      client: 'Ana Costa',
+      date: '2026-06-19',
+      time: '15:30',
+      address: 'Rua do Oratório, 78 - São Paulo',
+      description: 'Visita para inspeção, testes e troca de pontos com falhas no sistema de iluminação.',
+      value: 150,
+      distance: 3.4
+    },
+    {
+      id: 'default-5',
+      service: 'Instalação de ar-condicionado',
+      client: 'Carlos Mendes',
+      date: '2026-06-20',
+      time: '13:00',
+      address: 'Alameda Santos, 300 - São Paulo',
+      description: 'Pré-instalação para circuito dedicado e suporte para unidade split de 12.000 BTUs.',
+      value: 320,
+      distance: 4.0
+    }
+  ];
+
+  const allCards = [
+    ...staticCards,
+    ...dynamicRequests.map(item => ({
+      id: item.id,
+      service: item.service || 'Serviço elétrico',
+      client: item.phone || 'Cliente',
+      date: item.date || 'Data a definir',
+      time: item.time || 'Horário a definir',
+      address: item.address || 'Endereço não informado',
+      description: item.description || 'Descrição não informada.',
+      value: item.value || 0,
+      distance: Number(item.distance) || 5
+    }))
+  ];
+
+  allCards.sort((a, b) => a.distance - b.distance);
+  const topFive = allCards.slice(0, 5);
+  const container = document.querySelector('.cards');
+  if (!container) return;
+
+  container.innerHTML = '';
+  topFive.forEach((item, index) => {
+    const card = document.createElement('article');
+    card.className = 'service-card';
+    card.innerHTML = `
+      <span class="badge">${getDistanceLabel(item.distance)}</span>
+      <h3>${item.service}</h3>
+      <div class="meta">${item.client} • ${formatDate(item.date)} • ${item.time}</div>
+      <div class="info">${item.address}</div>
+      <div class="info" style="margin-top:8px;">${item.description}</div>
+      <div class="price">R$ ${Number(item.value).toFixed(0)}</div>
+    `;
+    container.appendChild(card);
+  });
+}
+
+renderServices();
+</script>
+</body>
+</html>

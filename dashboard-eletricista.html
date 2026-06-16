@@ -18,6 +18,7 @@
   --text-muted:#667085;
   --radius:16px;
   --shadow:0 10px 30px rgba(15,23,42,.06);
+  --danger:#d32f2f;
 }
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
 body{background:var(--bg);color:var(--dark);display:flex;min-height:100vh;}
@@ -74,7 +75,18 @@ a{text-decoration:none;color:inherit;}
 .btn{padding:10px 18px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px;transition:.2s;display:inline-flex;align-items:center;gap:6px;}
 .btn-primary{background:var(--secondary);color:#000;}
 .btn-primary:hover{background:var(--secondary-dark);}
+.btn-outline{background:var(--surface);color:var(--dark);border:1px solid var(--border);} 
+.btn-outline:hover{border-color:#c9ceda;}
 .btn-sm{padding:7px 14px;font-size:12px;}
+.modal{position:fixed;inset:0;background:rgba(0,0,0,.5);display:none;align-items:center;justify-content:center;z-index:999;}
+.modal.open{display:flex;}
+.modal-panel{background:white;width:min(560px,92vw);border-radius:16px;padding:24px;box-shadow:var(--shadow);}
+.modal-panel h4{font-size:18px;font-weight:700;margin-bottom:6px;}
+.modal-panel p{font-size:13px;color:var(--text-muted);margin-bottom:18px;}
+.modal-panel label{display:block;font-size:13px;font-weight:600;margin-bottom:6px;}
+.modal-panel input,.modal-panel textarea,.modal-panel select{width:100%;padding:11px 12px;border:1px solid var(--border);border-radius:10px;font-size:14px;margin-bottom:12px;font-family:'Poppins',sans-serif;}
+.modal-panel textarea{min-height:110px;resize:vertical;}
+.modal-actions{display:flex;justify-content:flex-end;gap:10px;margin-top:8px;}
 @media(max-width:900px){.sidebar{display:none;}.stats{grid-template-columns:1fr 1fr;}.two-col{grid-template-columns:1fr;}}
 </style>
 </head>
@@ -84,7 +96,7 @@ a{text-decoration:none;color:inherit;}
   <nav class="sidebar-nav">
     <div class="nav-item active"><span class="icon">🏠</span> Painel</div>
     <a href="agenda.html"><div class="nav-item"><span class="icon">📅</span> Agenda</div></a>
-    <div class="nav-item"><span class="icon">🔧</span> Serviços</div>
+    <a href="servicos-proximos.html"><div class="nav-item"><span class="icon">📍</span> Serviços próximos</div></a>
     <a href="chat.html"><div class="nav-item"><span class="icon">💬</span> Conversas <span class="nav-badge">3</span></div></a>
     <div class="nav-item"><span class="icon">⭐</span> Avaliações</div>
     <div class="nav-item"><span class="icon">💰</span> Financeiro</div>
@@ -139,29 +151,37 @@ a{text-decoration:none;color:inherit;}
 
     <div class="two-col">
       <div class="card">
-        <h3>Próximos serviços <a href="agenda.html">Ver agenda completa</a></h3>
-        <div class="appt-list">
-          <div class="appt">
+        <h3>Pedidos recebidos <a href="servicos-proximos.html">Ver serviços próximos</a></h3>
+        <div class="appt-list" id="requestList">
+          <div class="appt" data-id="1">
             <div class="appt-time">14:00</div>
             <div class="appt-info">
               <div class="client">João Silva</div>
               <div class="service">Instalação de tomadas</div>
               <div class="address">📍 Rua das Flores, 123 - São Paulo, SP</div>
             </div>
-            <span class="badge badge-success">Confirmado</span>
-            <span>›</span>
+            <span class="badge badge-warning">Pendente</span>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-sm btn-primary" onclick="openQuoteModal(1)">💬 Fazer orçamento</button>
+              <button class="btn btn-sm btn-outline" onclick="openVisitModal(1)">📅 Agendar visita</button>
+              <button class="btn btn-sm btn-primary" onclick="acceptRequest(1)">✅ Aceitar</button>
+            </div>
           </div>
-          <div class="appt">
+          <div class="appt" data-id="2">
             <div class="appt-time">16:30</div>
             <div class="appt-info">
               <div class="client">Maria Oliveira</div>
               <div class="service">Troca de disjuntor</div>
               <div class="address">📍 Av. Paulista, 1000 - São Paulo, SP</div>
             </div>
-            <span class="badge badge-success">Confirmado</span>
-            <span>›</span>
+            <span class="badge badge-warning">Pendente</span>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-sm btn-primary" onclick="openQuoteModal(2)">💬 Fazer orçamento</button>
+              <button class="btn btn-sm btn-outline" onclick="openVisitModal(2)">📅 Agendar visita</button>
+              <button class="btn btn-sm btn-primary" onclick="acceptRequest(2)">✅ Aceitar</button>
+            </div>
           </div>
-          <div class="appt">
+          <div class="appt" data-id="3">
             <div class="appt-time">18:00</div>
             <div class="appt-info">
               <div class="client">Pedro Santos</div>
@@ -169,7 +189,11 @@ a{text-decoration:none;color:inherit;}
               <div class="address">📍 Rua Augusta, 500 - São Paulo, SP</div>
             </div>
             <span class="badge badge-warning">Pendente</span>
-            <span>›</span>
+            <div style="display:flex;gap:8px;flex-wrap:wrap;">
+              <button class="btn btn-sm btn-primary" onclick="openQuoteModal(3)">💬 Fazer orçamento</button>
+              <button class="btn btn-sm btn-outline" onclick="openVisitModal(3)">📅 Agendar visita</button>
+              <button class="btn btn-sm btn-primary" onclick="acceptRequest(3)">✅ Aceitar</button>
+            </div>
           </div>
         </div>
       </div>
@@ -209,5 +233,219 @@ a{text-decoration:none;color:inherit;}
     </div>
   </div>
 </div>
+
+<div class="modal" id="quoteModal">
+  <div class="modal-panel">
+    <h4>Fazer orçamento</h4>
+    <p>Descreva o trabalho, os materiais e o valor estimado.</p>
+    <form id="quoteForm">
+      <label for="quoteDescription">Descrição do serviço</label>
+      <textarea id="quoteDescription" placeholder="Explique o que será feito, etapa por etapa..."></textarea>
+      <label for="quoteMaterials">Materiais exigidos</label>
+      <textarea id="quoteMaterials" placeholder="Ex.: 3 tomadas, 1 disjuntor, cabo 2.5mm..."></textarea>
+      <label for="quoteSpecs">Especificações técnicas</label>
+      <textarea id="quoteSpecs" placeholder="Capacidade, marca, normas, detalhes do projeto..."></textarea>
+      <label for="quoteValue">Valor estimado (R$)</label>
+      <input type="number" id="quoteValue" min="0" step="0.01" placeholder="Ex.: 240">
+      <label for="quoteDeadline">Prazo previsto</label>
+      <input type="text" id="quoteDeadline" placeholder="Ex.: 1 dia útil">
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModal('quoteModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Enviar orçamento</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<div class="modal" id="visitModal">
+  <div class="modal-panel">
+    <h4>Agendar visita</h4>
+    <p>Defina a data e o tipo de visita para o cliente.</p>
+    <form id="visitForm">
+      <label for="visitDate">Data da visita</label>
+      <input type="date" id="visitDate">
+      <label for="visitTime">Horário</label>
+      <input type="time" id="visitTime">
+      <label for="visitType">Tipo de visita</label>
+      <select id="visitType">
+        <option>Orçamento presencial</option>
+        <option>Execução do serviço</option>
+        <option>Verificação técnica</option>
+      </select>
+      <label for="visitNotes">Observações</label>
+      <textarea id="visitNotes" placeholder="Detalhes da visita ou instruções para o cliente..."></textarea>
+      <div class="modal-actions">
+        <button type="button" class="btn btn-outline" onclick="closeModal('visitModal')">Cancelar</button>
+        <button type="submit" class="btn btn-primary">Salvar visita</button>
+      </div>
+    </form>
+  </div>
+</div>
+
+<script>
+const REQUESTS_KEY = 'eletroconnectRequests';
+const QUOTES_KEY = 'eletroconnectQuotes';
+const VISITS_KEY = 'eletroconnectVisits';
+let currentRequestId = null;
+
+function readSaved(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+  } catch {
+    return fallback;
+  }
+}
+
+function writeSaved(key, value) {
+  localStorage.setItem(key, JSON.stringify(value));
+}
+
+function formatDate(dateStr) {
+  if (!dateStr) return 'Data a definir';
+  const parts = dateStr.split('-');
+  if (parts.length !== 3) return dateStr;
+  const [y, m, d] = parts;
+  return `${d}/${m}/${y}`;
+}
+
+function getRequestCard(id) {
+  return document.querySelector(`[data-id="${id}"]`);
+}
+
+function updateRequestStatus(id, status, badgeClass) {
+  const card = getRequestCard(id);
+  if (!card) return;
+  const badge = card.querySelector('.badge');
+  if (badge) {
+    badge.textContent = status;
+    badge.className = `badge ${badgeClass}`;
+  }
+  const buttons = card.querySelectorAll('button');
+  buttons.forEach(btn => btn.disabled = (status !== 'Pendente' && btn.textContent.includes('Aceitar')) ? true : btn.disabled);
+}
+
+function openQuoteModal(id){
+  currentRequestId = id;
+  document.getElementById('quoteModal').classList.add('open');
+}
+
+function openVisitModal(id){
+  currentRequestId = id;
+  document.getElementById('visitModal').classList.add('open');
+}
+
+function closeModal(id){
+  document.getElementById(id).classList.remove('open');
+}
+
+function acceptRequest(id){
+  const requests = readSaved(REQUESTS_KEY, []);
+  const request = requests.find(item => String(item.id) === String(id));
+  if (request) {
+    request.status = 'Aceito';
+    writeSaved(REQUESTS_KEY, requests);
+  }
+  updateRequestStatus(id, 'Aceito', 'badge-success');
+  const card = getRequestCard(id);
+  if (card) {
+    const buttons = card.querySelectorAll('button');
+    buttons.forEach(btn => btn.disabled = true);
+  }
+}
+
+function syncDashboardRequests(){
+  const requests = readSaved(REQUESTS_KEY, []);
+  requests.slice(0, 3).forEach(request => {
+    const card = getRequestCard(request.id);
+    if (!card) return;
+    const client = card.querySelector('.client');
+    const service = card.querySelector('.service');
+    const address = card.querySelector('.address');
+    const time = card.querySelector('.appt-time');
+    if (client) client.textContent = request.phone || 'Cliente';
+    if (service) service.textContent = request.service || 'Serviço';
+    if (address) address.textContent = `📍 ${request.address || 'Endereço não informado'}`;
+    if (time) time.textContent = request.date ? request.date.slice(5).replace('-', '/') : '---';
+    const status = request.status || 'Pendente';
+    const badgeClass = status === 'Aceito' ? 'badge-success' : status === 'Orçado' ? 'badge-warning' : 'badge-warning';
+    updateRequestStatus(request.id, status, badgeClass);
+  });
+}
+
+function saveQuote(){
+  const quote = {
+    requestId: currentRequestId,
+    description: document.getElementById('quoteDescription').value.trim(),
+    materials: document.getElementById('quoteMaterials').value.trim(),
+    specs: document.getElementById('quoteSpecs').value.trim(),
+    value: document.getElementById('quoteValue').value,
+    deadline: document.getElementById('quoteDeadline').value.trim()
+  };
+
+  const quotes = readSaved(QUOTES_KEY, []);
+  quotes.push(quote);
+  writeSaved(QUOTES_KEY, quotes);
+
+  const requests = readSaved(REQUESTS_KEY, []);
+  const request = requests.find(item => String(item.id) === String(currentRequestId));
+  if (request) {
+    request.status = 'Orçado';
+    writeSaved(REQUESTS_KEY, requests);
+  }
+  updateRequestStatus(currentRequestId, 'Orçado', 'badge-warning');
+  closeModal('quoteModal');
+  document.getElementById('quoteForm').reset();
+}
+
+function saveVisit(){
+  const visit = {
+    requestId: currentRequestId,
+    date: document.getElementById('visitDate').value,
+    time: document.getElementById('visitTime').value,
+    type: document.getElementById('visitType').value,
+    notes: document.getElementById('visitNotes').value.trim()
+  };
+
+  const visits = readSaved(VISITS_KEY, []);
+  visits.push(visit);
+  writeSaved(VISITS_KEY, visits);
+  closeModal('visitModal');
+  document.getElementById('visitForm').reset();
+  alert('Visita agendada com sucesso!');
+}
+
+document.getElementById('quoteForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const desc = document.getElementById('quoteDescription').value.trim();
+  const materials = document.getElementById('quoteMaterials').value.trim();
+  const specs = document.getElementById('quoteSpecs').value.trim();
+  const value = document.getElementById('quoteValue').value;
+  if (!desc || !materials || !specs || !value) {
+    alert('Preencha descrição, materiais, especificações e valor estimado.');
+    return;
+  }
+  saveQuote();
+  alert('Orçamento enviado com sucesso!');
+});
+
+document.getElementById('visitForm').addEventListener('submit', function(e){
+  e.preventDefault();
+  const date = document.getElementById('visitDate').value;
+  const time = document.getElementById('visitTime').value;
+  if (!date || !time) {
+    alert('Selecione a data e o horário da visita.');
+    return;
+  }
+  saveVisit();
+});
+
+document.querySelectorAll('.modal').forEach(modal => {
+  modal.addEventListener('click', function(e){
+    if (e.target === modal) modal.classList.remove('open');
+  });
+});
+
+syncDashboardRequests();
+</script>
 </body>
 </html>

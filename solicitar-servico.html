@@ -124,6 +124,22 @@ form.addEventListener('submit', function (e) {
   }
 
   if (!valid) return;
+
+  const request = {
+    id: Date.now(),
+    service: document.getElementById('categoria').value,
+    date: data.value,
+    address: endereco.value.trim(),
+    phone: telefone.value.trim(),
+    description: descricao.value.trim(),
+    distance: 1.8 + Math.random() * 4,
+    status: 'Pendente'
+  };
+
+  const saved = JSON.parse(localStorage.getItem('eletroconnectRequests') || '[]');
+  saved.unshift(request);
+  localStorage.setItem('eletroconnectRequests', JSON.stringify(saved));
+
   alert('Solicitação enviada com sucesso! Você será redirecionado para a agenda.');
   window.location.href = 'agenda.html';
 });
