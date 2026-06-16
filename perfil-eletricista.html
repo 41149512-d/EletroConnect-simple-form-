@@ -6,58 +6,69 @@
 <title>Carlos Silva - EletroConnect</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#FFFFFF;--secondary:#FFC107;--secondary-dark:#e6ac00;--dark:#121212;--gray:#f5f5f5;--gray-mid:#e0e0e0;--text-muted:#666;--radius:12px;--shadow:0 4px 16px rgba(0,0,0,.09);}
+:root{
+  --primary:#FFFFFF;
+  --secondary:#FFC107;
+  --secondary-dark:#e6ac00;
+  --dark:#121212;
+  --bg:#f5f7fb;
+  --surface:#ffffff;
+  --surface-alt:#f8f9fc;
+  --border:#e7eaf1;
+  --text-muted:#667085;
+  --radius:16px;
+  --shadow:0 10px 30px rgba(15,23,42,.06);
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body{background:#f9f9f9;color:var(--dark);}
+body{background:var(--bg);color:var(--dark);}
 a{text-decoration:none;color:inherit;}
-header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
-.navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 5%;}
+header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.navbar{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;}
 .logo{font-size:22px;font-weight:700;}
 .logo span{color:var(--secondary);}
 .back-link{font-size:14px;color:var(--secondary);font-weight:600;display:flex;align-items:center;gap:4px;}
 .btn{padding:12px 22px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:15px;transition:.2s;display:inline-flex;align-items:center;gap:8px;}
 .btn-primary{background:var(--secondary);color:#000;}
 .btn-primary:hover{background:var(--secondary-dark);}
-.btn-outline{background:white;color:var(--dark);border:2px solid var(--gray-mid);}
-.btn-outline:hover{border-color:#aaa;}
+.btn-outline{background:var(--surface);color:var(--dark);border:1px solid var(--border);}
+.btn-outline:hover{border-color:#c9ceda;}
 .btn-sm{padding:9px 16px;font-size:13px;}
-.main{max-width:1100px;margin:0 auto;padding:32px 5%;}
-.layout{display:grid;grid-template-columns:1fr 340px;gap:24px;align-items:flex-start;}
-/* Hero profile */
-.profile-hero{background:white;border-radius:16px;box-shadow:var(--shadow);padding:28px;margin-bottom:20px;}
+.main{max-width:1200px;margin:0 auto;padding:32px 24px 60px;}
+.layout{display:grid;grid-template-columns:1fr 360px;gap:24px;align-items:flex-start;}
+.profile-hero,.card,.book-card{background:var(--surface);border-radius:16px;box-shadow:var(--shadow);border:1px solid var(--border);}
+.profile-hero{padding:28px;margin-bottom:20px;}
 .profile-top{display:flex;gap:20px;align-items:center;margin-bottom:20px;}
-.avatar-lg{width:90px;height:90px;border-radius:50%;background:#e0e0e0;display:flex;align-items:center;justify-content:center;font-size:42px;flex-shrink:0;border:3px solid var(--secondary);}
+.avatar-lg{width:90px;height:90px;border-radius:50%;background:var(--surface-alt);display:flex;align-items:center;justify-content:center;font-size:42px;flex-shrink:0;border:3px solid var(--secondary);}
 .profile-info h1{font-size:24px;font-weight:700;margin-bottom:4px;}
 .verified{background:#e8f5e9;color:#2e7d32;font-size:12px;font-weight:600;padding:3px 10px;border-radius:6px;margin-left:8px;}
 .stars{color:#ffc107;}
 .meta-row{display:flex;gap:20px;flex-wrap:wrap;margin-top:10px;font-size:14px;color:var(--text-muted);}
 .meta-item{display:flex;align-items:center;gap:5px;}
 .stats-row{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-top:16px;}
-.stat{text-align:center;background:var(--gray);border-radius:10px;padding:14px 10px;}
+.stat{text-align:center;background:var(--surface-alt);border-radius:12px;padding:14px 10px;border:1px solid var(--border);}
 .stat .val{font-size:22px;font-weight:700;}
 .stat .lbl{font-size:11px;color:var(--text-muted);margin-top:2px;}
-.card{background:white;border-radius:14px;box-shadow:var(--shadow);padding:22px;margin-bottom:16px;}
+.card{padding:22px;margin-bottom:16px;}
 .card h3{font-size:16px;font-weight:700;margin-bottom:14px;}
 .tags{display:flex;gap:8px;flex-wrap:wrap;}
-.tag{background:var(--gray);padding:6px 12px;border-radius:8px;font-size:13px;font-weight:500;}
+.tag{background:var(--surface-alt);padding:6px 12px;border-radius:8px;font-size:13px;font-weight:500;border:1px solid var(--border);}
 .review-list{display:flex;flex-direction:column;gap:16px;}
-.review{padding-bottom:16px;border-bottom:1px solid var(--gray);}
+.review{padding-bottom:16px;border-bottom:1px solid var(--border);}
 .review:last-child{border-bottom:none;padding-bottom:0;}
 .review-top{display:flex;justify-content:space-between;align-items:center;margin-bottom:6px;}
 .reviewer{display:flex;align-items:center;gap:10px;}
-.reviewer-avatar{width:36px;height:36px;border-radius:50%;background:#ddd;display:flex;align-items:center;justify-content:center;font-size:16px;}
+.reviewer-avatar{width:36px;height:36px;border-radius:50%;background:var(--surface-alt);display:flex;align-items:center;justify-content:center;font-size:16px;border:1px solid var(--border);}
 .reviewer-name{font-weight:600;font-size:14px;}
 .review-date{font-size:12px;color:#aaa;}
 .review p{font-size:14px;color:var(--text-muted);margin-top:4px;}
-/* Sticky card */
-.book-card{background:white;border-radius:16px;box-shadow:var(--shadow);padding:24px;position:sticky;top:90px;}
+.book-card{padding:24px;position:sticky;top:90px;}
 .book-card .price{font-size:28px;font-weight:700;margin-bottom:4px;}
 .book-card .price span{font-size:15px;font-weight:400;color:var(--text-muted);}
 .book-card .avail{font-size:13px;color:#43a047;font-weight:600;margin-bottom:16px;}
 .book-card label{font-size:13px;font-weight:600;margin-bottom:6px;display:block;}
-input,select,textarea{width:100%;padding:11px 14px;border:2px solid var(--gray-mid);border-radius:10px;font-size:14px;font-family:'Poppins',sans-serif;background:white;margin-bottom:14px;}
+input,select,textarea{width:100%;padding:11px 14px;border:1px solid var(--border);border-radius:10px;font-size:14px;font-family:'Poppins',sans-serif;background:white;margin-bottom:14px;}
 input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondary);}
-.book-total{background:var(--gray);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;}
+.book-total{background:var(--surface-alt);border-radius:10px;padding:12px 16px;margin-bottom:14px;font-size:14px;border:1px solid var(--border);}
 .book-total .row-t{display:flex;justify-content:space-between;margin-bottom:4px;}
 .book-total .total{font-weight:700;font-size:16px;}
 @media(max-width:800px){.layout{grid-template-columns:1fr;}.stats-row{grid-template-columns:1fr 1fr;}}
@@ -170,8 +181,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondar
       <div class="price">R$ 100<span>/hora</span></div>
       <div class="avail">● Disponível hoje</div>
 
-      <label>Tipo de serviço</label>
-      <select>
+      <label for="servico">Tipo de serviço</label>
+      <select id="servico">
         <option>Selecione o serviço</option>
         <option>Instalação de tomadas</option>
         <option>Troca de disjuntor</option>
@@ -180,11 +191,11 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondar
         <option>Emergência elétrica</option>
       </select>
 
-      <label>Data</label>
-      <input type="date">
+      <label for="data">Data</label>
+      <input type="date" id="data" required>
 
-      <label>Horário</label>
-      <select>
+      <label for="horario">Horário</label>
+      <select id="horario">
         <option>Selecione o horário</option>
         <option>08:00</option>
         <option>09:00</option>
@@ -194,8 +205,8 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondar
         <option>16:00</option>
       </select>
 
-      <label>Endereço</label>
-      <input type="text" placeholder="Rua das Flores, 123 - São Paulo">
+      <label for="endereco">Endereço</label>
+      <input type="text" id="endereco" placeholder="Rua das Flores, 123 - São Paulo" required>
 
       <div class="book-total">
         <div class="row-t"><span>Visita técnica</span><span>Grátis</span></div>
@@ -203,10 +214,24 @@ input:focus,select:focus,textarea:focus{outline:none;border-color:var(--secondar
         <div class="row-t total"><span>Total estimado</span><span>R$ 200</span></div>
       </div>
 
-      <a href="solicitar-servico.html"><button class="btn btn-primary" style="width:100%;justify-content:center;">⚡ Solicitar serviço</button></a>
-      <a href="chat.html"><button class="btn btn-outline" style="width:100%;justify-content:center;margin-top:10px;">💬 Enviar mensagem</button></a>
+      <button type="button" class="btn btn-primary" style="width:100%;justify-content:center;" onclick="submitRequest()">⚡ Solicitar serviço</button>
+      <a href="chat.html"><button type="button" class="btn btn-outline" style="width:100%;justify-content:center;margin-top:10px;">💬 Enviar mensagem</button></a>
     </div>
   </div>
 </main>
+<script>
+function submitRequest(){
+  const servico = document.getElementById('servico').value;
+  const data = document.getElementById('data').value;
+  const horario = document.getElementById('horario').value;
+  const endereco = document.getElementById('endereco').value.trim();
+  if (!servico || servico === 'Selecione o serviço' || !data || !horario || horario === 'Selecione o horário' || !endereco) {
+    alert('Preencha todos os campos para solicitar o serviço.');
+    return;
+  }
+  alert('Solicitação enviada com sucesso!');
+  window.location.href = 'agenda.html';
+}
+</script>
 </body>
 </html>

@@ -62,22 +62,20 @@ input:focus{outline:none;border-color:var(--secondary);}
 
     <div class="form-group">
       <label>E-mail</label>
-      <input type="email" placeholder="seu@email.com">
+      <input type="email" id="email" placeholder="seu@email.com">
     </div>
 
     <div class="form-group">
       <label>Senha</label>
       <div class="input-wrap">
         <input type="password" id="pwd" placeholder="••••••••">
-        <button class="eye" onclick="togglePwd()">👁</button>
+        <button type="button" class="eye" onclick="togglePwd()">👁</button>
       </div>
     </div>
 
-    <div class="forgot"><a href="#">Esqueci minha senha</a></div>
+    <div class="forgot"><a href="mailto:suporte@eletroconnect.com?subject=Recupera%C3%A7%C3%A3o%20de%20senha">Esqueci minha senha</a></div>
 
-    <a href="dashboard-cliente.html" id="loginBtn">
-      <button class="btn btn-primary">⚡ Entrar</button>
-    </a>
+    <button type="button" class="btn btn-primary" id="loginBtn" onclick="doLogin()">⚡ Entrar</button>
 
     <div class="divider">ou continue com</div>
 
@@ -93,15 +91,25 @@ input:focus{outline:none;border-color:var(--secondary);}
 </main>
 
 <script>
+let selectedRole='cliente';
 function togglePwd(){
   const p=document.getElementById('pwd');
   p.type=p.type==='password'?'text':'password';
 }
 function setTab(el,tipo){
+  selectedRole=tipo;
   document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));
   el.classList.add('active');
-  const btn=document.getElementById('loginBtn');
-  btn.href=tipo==='cliente'?'dashboard-cliente.html':'dashboard-eletricista.html';
+}
+function doLogin(){
+  const email=document.getElementById('email').value.trim();
+  const pwd=document.getElementById('pwd').value;
+  if(!email || !pwd){
+    alert('Preencha e-mail e senha para continuar.');
+    return;
+  }
+  const target = selectedRole === 'eletricista' ? 'dashboard-eletricista.html' : 'dashboard-cliente.html';
+  window.location.href = target;
 }
 </script>
 </body>

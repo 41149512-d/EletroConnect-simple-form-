@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Solicitar Serviço - EletroConnect</title>
+  <title>Solicitar ServiÃ§o - EletroConnect</title>
   <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
   <style>
     :root{--primary:#FFFFFF;--secondary:#FFC107;--secondary-dark:#e6ac00;--dark:#121212;--gray:#f5f5f5;--gray-mid:#e0e0e0;--text-muted:#666;--radius:12px;--shadow:0 4px 16px rgba(0,0,0,.09);}
@@ -26,47 +26,61 @@
 <body>
 <header>
   <div class="navbar">
-    <a href="index.html" class="logo">? Eletro<span>Connect</span></a>
+    <a href="index.html" class="logo">âš¡ Eletro<span>Connect</span></a>
     <a href="dashboard-cliente.html" style="font-size:14px;color:var(--text-muted);">Voltar ao painel</a>
   </div>
 </header>
 <main>
   <div class="card">
-    <h2 style="margin-bottom:8px;">Solicitar serviço</h2>
-    <p style="color:var(--text-muted);margin-bottom:24px;">Preencha os detalhes para receber orçamentos.</p>
-    <div class="grid">
-      <div>
-        <label>Categoria</label>
-        <select>
-          <option>Instalações</option>
-          <option>Iluminação</option>
-          <option>Emergências</option>
-          <option>Disjuntores</option>
-          <option>Tomadas</option>
-          <option>Fiação</option>
-        </select>
+    <h2 style="margin-bottom:8px;">Solicitar serviÃ§o</h2>
+    <p style="color:var(--text-muted);margin-bottom:24px;">Preencha os detalhes para receber orÃ§amentos.</p>
+    <form id="serviceForm">
+      <div class="grid">
+        <div>
+          <label for="categoria">Categoria</label>
+          <select id="categoria">
+            <option>InstalaÃ§Ãµes</option>
+            <option>IluminaÃ§Ã£o</option>
+            <option>EmergÃªncias</option>
+            <option>Disjuntores</option>
+            <option>Tomadas</option>
+            <option>FiaÃ§Ã£o</option>
+          </select>
+        </div>
+        <div>
+          <label for="data">Data preferida</label>
+          <input type="date" id="data" required>
+        </div>
       </div>
-      <div>
-        <label>Data preferida</label>
-        <input type="date">
+      <div class="grid" style="margin-top:16px;">
+        <div>
+          <label for="endereco">EndereÃ§o</label>
+          <input type="text" id="endereco" placeholder="Rua, nÃºmero, bairro" required>
+        </div>
+        <div>
+          <label for="telefone">Telefone</label>
+          <input type="tel" id="telefone" placeholder="(11) 99999-9999" required>
+        </div>
       </div>
-    </div>
-    <div class="grid" style="margin-top:16px;">
-      <div>
-        <label>Endereço</label>
-        <input type="text" placeholder="Rua, número, bairro">
+      <div style="margin-top:16px;">
+        <label for="descricao">DescriÃ§Ã£o do problema</label>
+        <textarea id="descricao" placeholder="Descreva o que estÃ¡ acontecendo..." required></textarea>
       </div>
-      <div>
-        <label>Telefone</label>
-        <input type="tel" placeholder="(11) 99999-9999">
-      </div>
-    </div>
-    <div style="margin-top:16px;">
-      <label>Descrição do problema</label>
-      <textarea placeholder="Descreva o que está acontecendo..."></textarea>
-    </div>
-    <a href="agenda.html" style="display:block;margin-top:18px;"><button class="btn btn-primary">Enviar solicitação</button></a>
+      <button type="submit" class="btn btn-primary" style="display:block;margin-top:18px;">Enviar solicitaÃ§Ã£o</button>
+    </form>
   </div>
 </main>
+<script>
+const form = document.getElementById('serviceForm');
+form.addEventListener('submit', function (e) {
+  e.preventDefault();
+  if (!form.checkValidity()) {
+    form.reportValidity();
+    return;
+  }
+  alert('SolicitaÃ§Ã£o enviada com sucesso! VocÃª serÃ¡ redirecionado para a agenda.');
+  window.location.href = 'agenda.html';
+});
+</script>
 </body>
 </html>

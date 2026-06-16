@@ -133,15 +133,15 @@ input[type="range"]{padding:0;border:none;accent-color:var(--secondary);}
       <div class="range-label">Até R$ <strong id="priceVal">200</strong>/h</div>
     </div>
 
-    <button class="btn-filter">🔍 Aplicar filtros</button>
-    <button class="btn-clear">Limpar filtros</button>
+    <button class="btn-filter" onclick="applyFilters()">🔍 Aplicar filtros</button>
+    <button class="btn-clear" onclick="clearFilters()">Limpar filtros</button>
   </aside>
 
   <!-- Resultados -->
   <div>
     <div class="search-bar">
-      <input type="text" placeholder="Buscar por nome, serviço ou especialidade...">
-      <button class="btn btn-primary">🔍 Buscar</button>
+      <input type="text" id="searchInput" placeholder="Buscar por nome, serviço ou especialidade...">
+      <button class="btn btn-primary" onclick="applyFilters()">🔍 Buscar</button>
     </div>
 
     <div class="results-header">
@@ -221,5 +221,26 @@ input[type="range"]{padding:0;border:none;accent-color:var(--secondary);}
     </div>
   </div>
 </div>
+<script>
+function applyFilters() {
+  const query = document.getElementById('searchInput').value.toLowerCase();
+  const cards = document.querySelectorAll('.pro-card');
+  cards.forEach(card => {
+    const text = card.textContent.toLowerCase();
+    card.style.display = text.includes(query) ? '' : 'none';
+  });
+}
+function clearFilters() {
+  document.getElementById('searchInput').value = '';
+  document.querySelectorAll('input[type="checkbox"]').forEach(c => c.checked = false);
+  document.querySelectorAll('select')[0].value = 'Qualquer avaliação';
+  document.querySelectorAll('select')[1].value = 'Qualquer data';
+  document.getElementById('dist').value = 20;
+  document.getElementById('price').value = 200;
+  document.getElementById('distVal').textContent = 20;
+  document.getElementById('priceVal').textContent = 200;
+  applyFilters();
+}
+</script>
 </body>
 </html>

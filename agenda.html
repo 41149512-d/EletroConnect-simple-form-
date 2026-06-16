@@ -6,47 +6,56 @@
 <title>Agenda - EletroConnect</title>
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;500;600;700&display=swap" rel="stylesheet">
 <style>
-:root{--primary:#FFFFFF;--secondary:#FFC107;--secondary-dark:#e6ac00;--dark:#121212;--gray:#f5f5f5;--gray-mid:#e0e0e0;--text-muted:#666;--radius:12px;--shadow:0 4px 16px rgba(0,0,0,.09);}
+:root{
+  --primary:#FFFFFF;
+  --secondary:#FFC107;
+  --secondary-dark:#e6ac00;
+  --dark:#121212;
+  --bg:#f5f7fb;
+  --surface:#ffffff;
+  --surface-alt:#f8f9fc;
+  --border:#e7eaf1;
+  --text-muted:#667085;
+  --radius:16px;
+  --shadow:0 10px 30px rgba(15,23,42,.06);
+}
 *,*::before,*::after{margin:0;padding:0;box-sizing:border-box;font-family:'Poppins',sans-serif;}
-body{background:#f9f9f9;color:var(--dark);}
+body{background:var(--bg);color:var(--dark);}
 a{text-decoration:none;color:inherit;}
-header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;top:0;z-index:100;}
-.navbar{display:flex;justify-content:space-between;align-items:center;padding:16px 5%;}
+header{background:var(--surface);border-bottom:1px solid var(--border);position:sticky;top:0;z-index:100;}
+.navbar{max-width:1200px;margin:0 auto;display:flex;justify-content:space-between;align-items:center;padding:16px 24px;}
 .logo{font-size:22px;font-weight:700;}
 .logo span{color:var(--secondary);}
 .btn{padding:11px 20px;border:none;border-radius:10px;cursor:pointer;font-weight:600;font-size:14px;transition:.2s;display:inline-flex;align-items:center;gap:8px;}
 .btn-primary{background:var(--secondary);color:#000;}
 .btn-primary:hover{background:var(--secondary-dark);}
 .btn-sm{padding:8px 14px;font-size:12px;}
-.btn-ghost{background:var(--gray);color:var(--dark);}
-.main{max-width:1200px;margin:0 auto;padding:28px 5%;}
+.btn-ghost{background:var(--surface-alt);color:var(--dark);border:1px solid var(--border);}
+.main{max-width:1200px;margin:0 auto;padding:32px 24px 60px;}
 .page-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:24px;}
 .page-header h1{font-size:24px;font-weight:700;}
-.tabs{display:flex;gap:8px;background:white;border-radius:12px;padding:6px;box-shadow:var(--shadow);width:fit-content;margin-bottom:24px;}
+.tabs{display:flex;gap:8px;background:var(--surface);border-radius:12px;padding:6px;box-shadow:var(--shadow);width:fit-content;margin-bottom:24px;border:1px solid var(--border);}
 .tab{padding:9px 20px;border-radius:8px;font-size:14px;font-weight:500;cursor:pointer;border:none;background:transparent;color:var(--text-muted);}
 .tab.active{background:var(--secondary);color:#000;font-weight:700;}
-.layout{display:grid;grid-template-columns:1fr 340px;gap:20px;}
-/* Calendar */
-.calendar-card{background:white;border-radius:14px;box-shadow:var(--shadow);padding:24px;}
+.layout{display:grid;grid-template-columns:1.4fr .9fr;gap:20px;}
+.calendar-card,.appts-card,.side-card{background:var(--surface);border-radius:16px;box-shadow:var(--shadow);padding:24px;border:1px solid var(--border);}
 .cal-nav{display:flex;justify-content:space-between;align-items:center;margin-bottom:20px;}
 .cal-nav h2{font-size:18px;font-weight:700;}
 .cal-nav-btns{display:flex;gap:8px;}
-.nav-btn{background:var(--gray);border:none;border-radius:8px;padding:8px 14px;cursor:pointer;font-size:16px;}
+.nav-btn{background:var(--surface-alt);border:1px solid var(--border);border-radius:8px;padding:8px 14px;cursor:pointer;font-size:16px;}
 .weekdays{display:grid;grid-template-columns:repeat(7,1fr);text-align:center;font-size:13px;font-weight:600;color:var(--text-muted);margin-bottom:8px;}
 .days-grid{display:grid;grid-template-columns:repeat(7,1fr);gap:4px;}
 .day{aspect-ratio:1;display:flex;align-items:center;justify-content:center;border-radius:50%;font-size:14px;cursor:pointer;transition:.2s;position:relative;}
-.day:hover{background:var(--gray);}
-.day.other-month{color:#ccc;}
+.day:hover{background:var(--surface-alt);}
+.day.other-month{color:#cbd5e1;}
 .day.has-event::after{content:'';position:absolute;bottom:4px;left:50%;transform:translateX(-50%);width:5px;height:5px;border-radius:50%;background:var(--secondary);}
 .day.today{background:var(--dark);color:white;font-weight:700;}
 .day.today.has-event::after{background:var(--secondary);}
 .day.selected{background:var(--secondary);color:#000;font-weight:700;}
-/* Appointments */
-.appts-card{background:white;border-radius:14px;box-shadow:var(--shadow);padding:24px;}
 .appts-header{display:flex;justify-content:space-between;align-items:center;margin-bottom:16px;}
 .appts-header h3{font-size:16px;font-weight:700;}
 .appt-list{display:flex;flex-direction:column;gap:12px;}
-.appt{border-radius:12px;padding:16px;display:flex;gap:12px;align-items:flex-start;border-left:4px solid var(--secondary);background:var(--gray);}
+.appt{border-radius:12px;padding:16px;display:flex;gap:12px;align-items:flex-start;border-left:4px solid var(--secondary);background:var(--surface-alt);border:1px solid var(--border);}
 .appt.confirmed{border-left-color:#43a047;}
 .appt.pending{border-left-color:#ffc107;}
 .appt.cancelled{border-left-color:#e53935;opacity:.7;}
@@ -62,10 +71,8 @@ header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;to
 .badge-success{background:#e8f5e9;color:#2e7d32;}
 .badge-warning{background:#fff8e1;color:#f57f17;}
 .badge-cancelled{background:#ffebee;color:#c62828;}
-/* Sidebar card */
-.side-card{background:white;border-radius:14px;box-shadow:var(--shadow);padding:22px;margin-bottom:16px;}
 .side-card h3{font-size:15px;font-weight:700;margin-bottom:14px;}
-.summary-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--gray);}
+.summary-item{display:flex;justify-content:space-between;align-items:center;padding:10px 0;border-bottom:1px solid var(--border);}
 .summary-item:last-child{border-bottom:none;}
 .summary-item .lbl{font-size:14px;color:var(--text-muted);}
 .summary-item .val{font-size:14px;font-weight:700;}
@@ -199,13 +206,24 @@ header{background:white;box-shadow:0 2px 10px rgba(0,0,0,.08);position:sticky;to
 <script>
 function setTab(el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
 
+function updateSelectedDate(){
+  const selected = document.querySelector('.day.selected');
+  const label = document.querySelector('.appts-header h3');
+  const count = document.querySelector('.appts-header span');
+  if (selected) {
+    const day = selected.textContent.trim();
+    const month = 'junho';
+    const dayName = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'][new Date(2026,5,day).getDay()];
+    label.textContent = `${dayName.charAt(0).toUpperCase() + dayName.slice(1)}, ${day} de ${month}`;
+    count.textContent = selected.classList.contains('has-event') ? '3 serviços' : '0 serviços';
+  }
+}
+
 // Generate calendar
 const grid=document.getElementById('calGrid');
 const today=16;
 const hasDays=[3,9,12,16,18,22,24,28];
-// June 2026 starts on Monday (day 1)
-const startDay=1; // Mon=1, so offset 1 from Sunday
-// First cell offset
+const startDay=1;
 for(let i=0;i<startDay;i++){
   const d=document.createElement('div');
   d.className='day other-month';
@@ -216,9 +234,21 @@ for(let d=1;d<=30;d++){
   const el=document.createElement('div');
   el.className='day'+(d===today?' today selected':'')+(hasDays.includes(d)?' has-event':'');
   el.textContent=d;
-  el.onclick=()=>{document.querySelectorAll('.day.selected').forEach(x=>x.classList.remove('selected'));el.classList.add('selected');}
+  el.onclick=()=>{
+    document.querySelectorAll('.day.selected').forEach(x=>x.classList.remove('selected'));
+    el.classList.add('selected');
+    updateSelectedDate();
+  };
   grid.appendChild(el);
 }
+
+document.querySelector('.btn-ghost').addEventListener('click', () => {
+  document.querySelectorAll('.day.selected').forEach(x=>x.classList.remove('selected'));
+  document.querySelector('.day.today').classList.add('selected');
+  updateSelectedDate();
+});
+
+updateSelectedDate();
 </script>
 </body>
 </html>
