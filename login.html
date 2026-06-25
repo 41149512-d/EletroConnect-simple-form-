@@ -96,6 +96,9 @@ input.invalid{border-color:#c62828;}
 
 <script>
 let selectedRole='cliente';
+if (localStorage.getItem('eletroconnectSession')) {
+  window.location.href = 'index.html';
+}
 function togglePwd(){
   const p=document.getElementById('pwd');
   p.type=p.type==='password'?'text':'password';
@@ -138,6 +141,7 @@ function doLogin(){
     setError(pwd, pwdError, '');
   }
   if(!valid) return;
+  localStorage.setItem('eletroconnectSession', JSON.stringify({ role: selectedRole }));
   const target = selectedRole === 'eletricista' ? 'dashboard-eletricista.html' : 'dashboard-cliente.html';
   window.location.href = target;
 }

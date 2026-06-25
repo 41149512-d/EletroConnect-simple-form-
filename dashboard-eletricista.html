@@ -326,6 +326,13 @@ function updateRequestStatus(id, status, badgeClass) {
 
 function openQuoteModal(id){
   currentRequestId = id;
+  const visits = readSaved(VISITS_KEY, []);
+  const hasVisit = visits.some(item => String(item.requestId) === String(id));
+  if (!hasVisit) {
+    alert('Agende uma visita antes de enviar o orçamento.');
+    openVisitModal(id);
+    return;
+  }
   document.getElementById('quoteModal').classList.add('open');
 }
 
@@ -355,20 +362,33 @@ function acceptRequest(id){
 
 function syncDashboardRequests(){
   const requests = readSaved(REQUESTS_KEY, []);
-  requests.slice(0, 3).forEach(request => {
-    const card = getRequestCard(request.id);
-    if (!card) return;
-    const client = card.querySelector('.client');
-    const service = card.querySelector('.service');
-    const address = card.querySelector('.address');
-    const time = card.querySelector('.appt-time');
-    if (client) client.textContent = request.phone || 'Cliente';
-    if (service) service.textContent = request.service || 'Serviço';
-    if (address) address.textContent = `📍 ${request.address || 'Endereço não informado'}`;
-    if (time) time.textContent = request.date ? request.date.slice(5).replace('-', '/') : '---';
+  const visits = readSaved(VISITS_KEY, []);
+  const existingCards = Array.from(document.querySelectorAll('#requestList .appt'));
+  existingCards.forEach(card => card.remove());
+
+  requests.slice(0, 5).forEach(request => {
+    const card = document.createElement('div');
+    card.className = 'appt';
+    card.setAttribute('data-id', String(request.id));
+    const visitState = visits.some(item => String(item.requestId) === String(request.id));
+    const badgeClass = request.status === 'Aceito' ? 'badge-success' : request.status === 'Orçado' ? 'badge-warning' : 'badge-warning';
     const status = request.status || 'Pendente';
-    const badgeClass = status === 'Aceito' ? 'badge-success' : status === 'Orçado' ? 'badge-warning' : 'badge-warning';
-    updateRequestStatus(request.id, status, badgeClass);
+    const priceText = request.pricingMode === 'discussed' ? 'Valor a ser discutido' : `R$ ${Number(request.projectValue || 0).toFixed(2).replace('.', ',')}`;
+    card.innerHTML = `
+      <div class="appt-time">${request.date ? request.date.slice(5).replace('-', '/') : '---'}</div>
+      <div class="appt-info">
+        <div class="client">${request.phone || 'Cliente'}</div>
+        <div class="service">${request.service || 'Serviço'} • ${priceText}</div>
+        <div class="address">📍 ${request.address || 'Endereço não informado'}</div>
+      </div>
+      <span class="badge ${badgeClass}">${status}</span>
+      <div style="display:flex;gap:8px;flex-wrap:wrap;">
+        <button class="btn btn-sm btn-outline" onclick="openVisitModal(${request.id})">📅 Agendar visita</button>
+        <button class="btn btn-sm btn-primary" onclick="openQuoteModal(${request.id})">💬 Fazer orçamento</button>
+        <button class="btn btn-sm btn-primary" onclick="acceptRequest(${request.id})">✅ Aceitar</button>
+      </div>
+      ${visitState ? '<div style="font-size:11px;color:#43a047;margin-top:6px;">Visita registrada</div>' : ''}`;
+    document.getElementById('requestList').appendChild(card);
   });
 }
 
@@ -379,7 +399,8 @@ function saveQuote(){
     materials: document.getElementById('quoteMaterials').value.trim(),
     specs: document.getElementById('quoteSpecs').value.trim(),
     value: document.getElementById('quoteValue').value,
-    deadline: document.getElementById('quoteDeadline').value.trim()
+    deadline: document.getElementById('quoteDeadline').value.trim(),
+    createdAt: new Date().toISOString()
   };
 
   const quotes = readSaved(QUOTES_KEY, []);
@@ -403,7 +424,8 @@ function saveVisit(){
     date: document.getElementById('visitDate').value,
     time: document.getElementById('visitTime').value,
     type: document.getElementById('visitType').value,
-    notes: document.getElementById('visitNotes').value.trim()
+    notes: document.getElementById('visitNotes').value.trim(),
+    status: 'Agendado'
   };
 
   const visits = readSaved(VISITS_KEY, []);

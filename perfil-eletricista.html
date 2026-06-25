@@ -214,10 +214,21 @@ input.invalid,select.invalid,textarea.invalid{border-color:#c62828;}
       <input type="text" id="endereco" placeholder="Rua das Flores, 123 - São Paulo" required>
       <div class="error-text" id="enderecoError"></div>
 
+      <label for="pricingMode">Opção de preço</label>
+      <select id="pricingMode">
+        <option value="fixed">Preço fixo</option>
+        <option value="discussed">Valor a ser discutido</option>
+      </select>
+      <div id="priceBlock" style="margin-top:8px;">
+        <label for="valorProjeto">Valor do projeto (R$)</label>
+        <input type="number" id="valorProjeto" min="0" step="0.01" value="200" placeholder="Ex.: 350">
+        <div class="error-text" id="valorProjetoError"></div>
+      </div>
+
       <div class="book-total">
         <div class="row-t"><span>Visita técnica</span><span>Grátis</span></div>
-        <div class="row-t"><span>Estimativa (2h)</span><span>R$ 200</span></div>
-        <div class="row-t total"><span>Total estimado</span><span>R$ 200</span></div>
+        <div class="row-t"><span>Valor do projeto</span><span id="summaryValue">R$ 200,00</span></div>
+        <div class="row-t total"><span>Total estimado</span><span id="summaryTotal">R$ 200,00</span></div>
       </div>
 
       <button type="button" class="btn btn-primary" style="width:100%;justify-content:center;" onclick="submitRequest()">⚡ Solicitar serviço</button>
@@ -235,6 +246,34 @@ function setError(input, errorEl, message) {
     input.classList.remove('invalid');
     errorEl.textContent = '';
     errorEl.style.display = 'none';
+  }
+}
+
+function formatCurrency(value) {
+  const numericValue = Number(value || 0);
+  return `R$ ${numericValue.toFixed(2).replace('.', ',')}`;
+}
+
+function updatePriceSummary() {
+  const valorProjeto = document.getElementById('valorProjeto');
+  const summaryValue = document.getElementById('summaryValue');
+  const summaryTotal = document.getElementById('summaryTotal');
+  const value = valorProjeto ? valorProjeto.value : '';
+  const formatted = formatCurrency(value);
+  if (summaryValue) summaryValue.textContent = formatted;
+  if (summaryTotal) summaryTotal.textContent = formatted;
+}
+
+const pricingMode = document.getElementById('pricingMode');
+const priceBlock = document.getElementById('priceBlock');
+const valorProjeto = document.getElementById('valorProjeto');
+
+function togglePriceBlock() {
+  const isFixed = pricingMode.value === 'fixed';
+  priceBlock.style.display = isFixed ? 'block' : 'none';
+  if (!isFixed) {
+    valorProjeto.value = '';
+    setError(valorProjeto, document.getElementById('valorProjetoError'), '');
   }
 }
 
@@ -269,11 +308,32 @@ function submitRequest(){
   } else {
     setError(endereco, document.getElementById('enderecoError'), '');
   }
+  if (pricingMode.value === 'fixed') {
+    if (!valorProjeto.value || Number(valorProjeto.value) <= 0) {
+      setError(valorProjeto, document.getElementById('valorProjetoError'), 'Informe um valor válido para o projeto.');
+      valid = false;
+    } else {
+      setError(valorProjeto, document.getElementById('valorProjetoError'), '');
+    }
+  }
 
   if (!valid) return;
   alert('Solicitação enviada com sucesso!');
   window.location.href = 'agenda.html';
 }
+
+const valorProjetoInput = document.getElementById('valorProjeto');
+if (pricingMode) {
+  pricingMode.addEventListener('change', () => {
+    togglePriceBlock();
+    updatePriceSummary();
+  });
+}
+if (valorProjetoInput) {
+  valorProjetoInput.addEventListener('input', updatePriceSummary);
+}
+togglePriceBlock();
+updatePriceSummary();
 </script>
 </body>
 </html>

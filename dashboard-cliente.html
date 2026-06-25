@@ -176,5 +176,54 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
     </div></a>
   </div>
 </main>
+<script>
+const REQUESTS_KEY = 'eletroconnectRequests';
+const VISITS_KEY = 'eletroconnectVisits';
+
+function readSaved(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+  } catch {
+    return fallback;
+  }
+}
+
+function formatPrice(value) {
+  if (value === null || value === undefined || value === '') return 'Valor a ser discutido';
+  return `R$ ${Number(value).toFixed(2).replace('.', ',')}`;
+}
+
+function renderRequests() {
+  const requests = readSaved(REQUESTS_KEY, []);
+  const ordersList = document.querySelector('.orders-list');
+  if (!ordersList) return;
+  ordersList.innerHTML = '';
+
+  if (!requests.length) {
+    ordersList.innerHTML = '<div class="order-card"><div class="order-info"><h4>Nenhum projeto ainda</h4><p>Seu próximo projeto aparecerá aqui após enviar uma solicitação.</p></div></div>';
+    return;
+  }
+
+  requests.slice(0, 3).forEach((request) => {
+    const badgeClass = request.status === 'Aceito' ? 'badge-success' : request.status === 'Orçado' ? 'badge-warning' : 'badge-pending';
+    const badgeText = request.status || 'Pendente';
+    const priceText = request.pricingMode === 'discussed' ? 'Valor a ser discutido' : formatPrice(request.projectValue);
+    const card = document.createElement('div');
+    card.className = 'order-card';
+    card.innerHTML = `
+      <div class="order-info">
+        <h4>${request.service || 'Serviço solicitado'}</h4>
+        <p>${request.address || 'Endereço não informado'} • ${request.date || 'Data a definir'} • ${priceText}</p>
+      </div>
+      <span class="badge ${badgeClass}">${badgeText}</span>
+      <div class="order-actions">
+        <a href="chat.html"><button class="btn btn-primary btn-sm">💬 Chat</button></a>
+      </div>`;
+    ordersList.appendChild(card);
+  });
+}
+
+renderRequests();
+</script>
 </body>
 </html>

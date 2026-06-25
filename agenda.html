@@ -108,7 +108,7 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
       <!-- Calendar -->
       <div class="calendar-card" style="margin-bottom:20px;">
         <div class="cal-nav">
-          <h2>Junho 2026</h2>
+          <h2 id="monthLabel">Junho 2026</h2>
           <div class="cal-nav-btns">
             <button class="nav-btn">‹</button>
             <button class="btn btn-ghost btn-sm">Hoje</button>
@@ -124,48 +124,10 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
       <!-- Appointments -->
       <div class="appts-card">
         <div class="appts-header">
-          <h3>Segunda-feira, 16 de junho</h3>
-          <span style="font-size:13px;color:var(--text-muted);">3 serviços</span>
+          <h3 id="selectedDateLabel">Segunda-feira, 16 de junho</h3>
+          <span id="selectedDateCount" style="font-size:13px;color:var(--text-muted);">0 serviços</span>
         </div>
-        <div class="appt-list">
-          <div class="appt confirmed">
-            <div class="appt-time-col"><div class="time">08:00</div><div class="dur">2h</div></div>
-            <div class="appt-body">
-              <h4>Instalação de tomadas</h4>
-              <div class="client">👤 João Silva</div>
-              <div class="address">📍 Rua das Flores, 123 - São Paulo, SP</div>
-              <div class="appt-actions">
-                <span class="badge badge-success">Confirmado</span>
-                <a href="chat.html"><button class="btn btn-primary btn-sm">💬 Chat</button></a>
-              </div>
-            </div>
-          </div>
-          <div class="appt confirmed">
-            <div class="appt-time-col"><div class="time">14:00</div><div class="dur">1h30</div></div>
-            <div class="appt-body">
-              <h4>Troca de disjuntor</h4>
-              <div class="client">👤 Maria Oliveira</div>
-              <div class="address">📍 Av. Paulista, 1000 - São Paulo, SP</div>
-              <div class="appt-actions">
-                <span class="badge badge-success">Confirmado</span>
-                <a href="chat.html"><button class="btn btn-primary btn-sm">💬 Chat</button></a>
-              </div>
-            </div>
-          </div>
-          <div class="appt pending">
-            <div class="appt-time-col"><div class="time">17:00</div><div class="dur">2h</div></div>
-            <div class="appt-body">
-              <h4>Instalação de luminárias</h4>
-              <div class="client">👤 Pedro Santos</div>
-              <div class="address">📍 Rua Augusta, 500 - São Paulo, SP</div>
-              <div class="appt-actions">
-                <span class="badge badge-warning">Pendente</span>
-                <button class="btn btn-primary btn-sm">✓ Confirmar</button>
-                <button class="btn btn-sm" style="background:#ffebee;color:#c62828;">✗ Recusar</button>
-              </div>
-            </div>
-          </div>
-        </div>
+        <div class="appt-list" id="appointmentList"></div>
       </div>
     </div>
 
@@ -173,10 +135,10 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
     <div>
       <div class="side-card">
         <h3>Resumo da semana</h3>
-        <div class="summary-item"><span class="lbl">Serviços agendados</span><span class="val">8</span></div>
-        <div class="summary-item"><span class="lbl">Confirmados</span><span class="val" style="color:#43a047;">6</span></div>
-        <div class="summary-item"><span class="lbl">Pendentes</span><span class="val" style="color:#f57f17;">2</span></div>
-        <div class="summary-item"><span class="lbl">Estimativa de ganhos</span><span class="val">R$ 1.240</span></div>
+        <div class="summary-item"><span class="lbl">Serviços agendados</span><span class="val" id="summaryTotal">0</span></div>
+        <div class="summary-item"><span class="lbl">Confirmados</span><span class="val" id="summaryConfirmed" style="color:#43a047;">0</span></div>
+        <div class="summary-item"><span class="lbl">Pendentes</span><span class="val" id="summaryPending" style="color:#f57f17;">0</span></div>
+        <div class="summary-item"><span class="lbl">Estimativa de ganhos</span><span class="val" id="summaryValue">R$ 0,00</span></div>
       </div>
 
       <div class="side-card">
@@ -204,25 +166,94 @@ header{background:var(--surface);border-bottom:1px solid var(--border);position:
 </main>
 
 <script>
+const REQUESTS_KEY = 'eletroconnectRequests';
+const VISITS_KEY = 'eletroconnectVisits';
+
+function readSaved(key, fallback) {
+  try {
+    return JSON.parse(localStorage.getItem(key) || JSON.stringify(fallback));
+  } catch {
+    return fallback;
+  }
+}
+
 function setTab(el){document.querySelectorAll('.tab').forEach(t=>t.classList.remove('active'));el.classList.add('active');}
+
+function formatDateLabel(dateValue) {
+  if (!dateValue) return 'Data a definir';
+  const [year, month, day] = dateValue.split('-').map(Number);
+  const date = new Date(year, month - 1, day);
+  const monthName = ['janeiro','fevereiro','março','abril','maio','junho','julho','agosto','setembro','outubro','novembro','dezembro'][date.getMonth()];
+  const dayName = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'][date.getDay()];
+  return `${dayName.charAt(0).toUpperCase() + dayName.slice(1)}, ${date.getDate()} de ${monthName}`;
+}
 
 function updateSelectedDate(){
   const selected = document.querySelector('.day.selected');
-  const label = document.querySelector('.appts-header h3');
-  const count = document.querySelector('.appts-header span');
-  if (selected) {
-    const day = selected.textContent.trim();
-    const month = 'junho';
-    const dayName = ['domingo','segunda-feira','terça-feira','quarta-feira','quinta-feira','sexta-feira','sábado'][new Date(2026,5,day).getDay()];
-    label.textContent = `${dayName.charAt(0).toUpperCase() + dayName.slice(1)}, ${day} de ${month}`;
-    count.textContent = selected.classList.contains('has-event') ? '3 serviços' : '0 serviços';
+  const label = document.getElementById('selectedDateLabel');
+  const count = document.getElementById('selectedDateCount');
+  const appointmentList = document.getElementById('appointmentList');
+  if (!selected || !label || !count || !appointmentList) return;
+
+  const day = selected.textContent.trim();
+  const month = new Date(2026, 5, 1).getMonth() + 1;
+  const year = 2026;
+  const dateValue = `${year}-${String(month).padStart(2,'0')}-${String(day).padStart(2,'0')}`;
+  label.textContent = formatDateLabel(dateValue);
+
+  const visits = readSaved(VISITS_KEY, []);
+  const requests = readSaved(REQUESTS_KEY, []);
+  const appointments = [...visits.filter(item => item.date === dateValue), ...requests.filter(item => item.date === dateValue)];
+  appointmentList.innerHTML = '';
+
+  if (!appointments.length) {
+    appointmentList.innerHTML = '<div class="appt"><div class="appt-body"><h4>Nenhum agendamento</h4><div class="client">Não há serviços marcados para este dia.</div></div></div>';
+    count.textContent = '0 serviços';
+    return;
   }
+
+  appointments.forEach((item) => {
+    const appt = document.createElement('div');
+    appt.className = 'appt confirmed';
+    const title = item.service || item.type || 'Serviço';
+    const client = item.phone || item.client || 'Cliente';
+    const address = item.address || 'Endereço não informado';
+    const status = item.status || 'Confirmado';
+    const badgeClass = status === 'Pendente' ? 'badge-warning' : 'badge-success';
+    appt.innerHTML = `
+      <div class="appt-time-col"><div class="time">${item.time || '---'}</div><div class="dur">${item.duration || '1h'}</div></div>
+      <div class="appt-body">
+        <h4>${title}</h4>
+        <div class="client">👤 ${client}</div>
+        <div class="address">📍 ${address}</div>
+        <div class="appt-actions">
+          <span class="badge ${badgeClass}">${status}</span>
+          <a href="chat.html"><button class="btn btn-primary btn-sm">💬 Chat</button></a>
+        </div>
+      </div>`;
+    appointmentList.appendChild(appt);
+  });
+  count.textContent = `${appointments.length} serviços`;
+}
+
+function renderSummary() {
+  const requests = readSaved(REQUESTS_KEY, []);
+  const visits = readSaved(VISITS_KEY, []);
+  const confirmed = requests.filter(item => item.status === 'Aceito' || item.status === 'Orçado').length + visits.length;
+  const pending = Math.max(0, requests.length - confirmed);
+  document.getElementById('summaryTotal').textContent = requests.length + visits.length;
+  document.getElementById('summaryConfirmed').textContent = confirmed;
+  document.getElementById('summaryPending').textContent = pending;
+  document.getElementById('summaryValue').textContent = `R$ ${requests.reduce((sum, item) => sum + (Number(item.projectValue) || 0), 0).toFixed(2).replace('.', ',')}`;
 }
 
 // Generate calendar
 const grid=document.getElementById('calGrid');
 const today=16;
 const hasDays=[3,9,12,16,18,22,24,28];
+const requests = readSaved(REQUESTS_KEY, []);
+const visits = readSaved(VISITS_KEY, []);
+const markedDays = new Set([...requests.map(item => Number(item.date?.split('-')[2] || 0)), ...visits.map(item => Number(item.date?.split('-')[2] || 0))].filter(Boolean));
 const startDay=1;
 for(let i=0;i<startDay;i++){
   const d=document.createElement('div');
@@ -232,7 +263,7 @@ for(let i=0;i<startDay;i++){
 }
 for(let d=1;d<=30;d++){
   const el=document.createElement('div');
-  el.className='day'+(d===today?' today selected':'')+(hasDays.includes(d)?' has-event':'');
+  el.className='day'+(d===today?' today selected':'')+(markedDays.has(d)?' has-event':'');
   el.textContent=d;
   el.onclick=()=>{
     document.querySelectorAll('.day.selected').forEach(x=>x.classList.remove('selected'));
@@ -248,6 +279,7 @@ document.querySelector('.btn-ghost').addEventListener('click', () => {
   updateSelectedDate();
 });
 
+renderSummary();
 updateSelectedDate();
 </script>
 </body>
